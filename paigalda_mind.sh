@@ -12,7 +12,7 @@ then
 fi
 
 # echo "Värskendan kogu süsteemi..."
-# apt update > /dev/null 2>&1 && apt full-upgrade -y > /dev/null 2>&1 || error_stop
+# apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y > /dev/null 2>&1 || error_stop
 # echo "Süsteem on ajakohane."
 
 error_stop () {
@@ -32,7 +32,7 @@ install_butt () {
 
 install_latest_butt () {
     # butt install fix https://stackoverflow.com/questions/27955600/broadcast-using-this-tool-butt-install-issues
-    apt install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev 
+    apt-get install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev 
     wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download
     mkdir butt_installer
     tar -xzf butt-*.tar.gz -C butt_installer --strip-components 1
@@ -43,7 +43,7 @@ install_latest_butt () {
 }
 
 install_old_butt () {
-    apt install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev
+    apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev
     wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1%7Etrusty_amd64.deb
     dpkg -i butt*.deb
 }
@@ -55,7 +55,7 @@ apt_install () {
     if [ $? -ne 0 ]
     then
         echo "$appname pole paigaldatud. Paigaldame programmi $appname..."
-        apt install $1 -y || error_stop
+        apt-get install $1 -y || error_stop
         echo "$appname paigaldatud"
     fi
 }
@@ -127,5 +127,5 @@ do
     fi
 done
 
-apt clean && apt autoremove
+apt-get clean && apt-get autoremove
 echo "Kõik valitud tarkvara on paigaldatud." 

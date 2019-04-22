@@ -25,7 +25,7 @@ install_butt () {
     if [ $? -ne 0 ]
     then
         echo "butt pole paigaldatud. Paigaldame programmi butt..."
-        install_latest_butt || install_old_butt || error_stop
+        install_latest_butt && install_old_butt || error_stop
         echo "butt paigaldatud."
     fi
 }

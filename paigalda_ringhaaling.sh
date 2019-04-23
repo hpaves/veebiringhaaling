@@ -11,13 +11,13 @@ then
     exit 1
 fi
 
-# echo "Värskendan kogu süsteemi..."
-# apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y > /dev/null 2>&1 || error_stop
-# echo "Süsteem on ajakohane."
-
 error_stop () {
     echo "Skriptis tekkis viga ja see peatati." && exit 1
 }
+
+echo "Värskendan kogu süsteemi..."
+apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || error_stop
+echo "Süsteem on ajakohane."
 
 install_butt () {
     which butt > /dev/null 2>&1

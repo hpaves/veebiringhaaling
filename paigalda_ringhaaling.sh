@@ -44,7 +44,7 @@ install_latest_butt () {
 
 install_old_butt () {
     apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev
-    wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1%7Etrusty_amd64.deb
+    wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download
     dpkg -i butt*.deb
 }
 

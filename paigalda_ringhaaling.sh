@@ -60,6 +60,8 @@ apt_install () {
     fi
 }
 
+# Toggleable flags to indicate choices - Dennis Williamson
+# 2013-05-10 - https://serverfault.com/a/506704
 choice () {
     local choice=$1
     if [[ ${opts[choice]} ]] # toggle
@@ -72,8 +74,6 @@ choice () {
 
 software=("sudo" "icecast2" "butt" "liquidsoap" "mixxx")
 
-# Toggleable flags to indicate choices - Dennis Williamson
-# 2013-05-10 - https://serverfault.com/a/506704
 PS3='Vali soovitud tarkvara: ' 
 while :
 do

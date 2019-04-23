@@ -78,6 +78,10 @@ PS3='Vali soovitud tarkvara: '
 while :
 do
     clear
+    printf 'Icecast2 tuleb paigaldamisel kohe seadistada. Loe juhendit! %s\n'
+    printf 'Valiku tegemiseks sisesta vastava programmi number ja vajuta sisestusklahvi. %s\n'
+    printf 'Valiku tühistamiseks vali juba valitud programm uuesti. %s\n'
+    printf 'Väljumiseks vajuta CTRL+C %s\n\n'
     options=("${software[0]} ${opts[1]}" \
               "${software[1]} ${opts[2]}" \
               "${software[2]} ${opts[3]}" \

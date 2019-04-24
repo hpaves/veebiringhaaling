@@ -7,12 +7,12 @@
 #Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 # if [ $UID -ne 0 ]
 # then
-#     echo "$(basename $0) tuleb käivitada juurkasutaja õigustes"
+#     printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
 #     exit 1
 # fi
 
 error_message () {
-    echo "Skriptis tekkis viga ja see peatati." && exit 1
+    printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
 }
 
 linux_username=dj
@@ -21,7 +21,7 @@ homedir=/home/$linux_username
 user_confirm () {
     # ühe klahvivajutusega vastuvõtmine https://stackoverflow.com/a/1885534
     read -p "Teostan toimingu? [J/e] " -n 1 -r
-    echo    # (optional) move to a new line
+    echo
     if [[ $REPLY =~ ^[Jj]$ ]]
     then
         echo yes
@@ -75,9 +75,15 @@ read_icecast (){
     icecast_admin=$(read_icecast_parameter admin)
 }
 
+# privaatse ipv4 filtreerimine https://unix.stackexchange.com/a/119272
+private_ipv4 () {
+ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'
+}
+
 print_icecast_data (){
-    printf "Sinu icecast serveri aadress on: $icecast_hostname \n"
-    printf "Sinu icecast serveri port on: $icecast_port \n"
+    printf "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\n"
+    printf "Sinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $private_ipv4\n"
+    printf "Sinu icecast serveri port on: $icecast_port\n"
     printf "Sinu icecast meediavoo ühendamise parool on: $icecast_source_password\n"
     printf "Sinu icecast relee seadistamise parool on: $icecast_relay_password\n"
     printf "Sinu icecast haldamise parool on: $icecast_admin_password \n"
@@ -102,3 +108,12 @@ configure_icecast
 configure_butt
 
 # mkdir -p $homedir/{helid/{muusika,teated},salvestused}
+# groupadd veebiringhaaling
+# usermod -a -G veebiringhaaling $linux_username
+# usermod -a -G veebiringhaaling icecast2
+# usermod -a -G veebiringhaaling liquidsoap
+# chown -R :veebiringhaaling $homedir/{helid,salvestused}
+# chmod -R 750 $homedir/helid
+# chmod -R 754 $homedir/salvestused
+
+# meelespead: ip staatiliseks, lõpus restart (gruppidesse lisamise aktiveerumiseks jms)

@@ -88,6 +88,7 @@ do
               "${software[2]} ${opts[3]}" \
               "${software[3]} ${opts[4]}" \
               "${software[4]} ${opts[5]}" \
+              "${software[5]} ${opts[6]}" \
               "Valmis")
     select opt in "${options[@]}"
     do

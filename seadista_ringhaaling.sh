@@ -37,10 +37,21 @@ read_icecast2 (){
     icecast_admin_user=$(grep -Po "(?<=<admin-user>).*(?=<\/admin-user>)" konfid/icecast.xml)
 }
 
-read_butt () {
-    grep -Po "(?<=password = ).*$" konfid/.buttrc
+echo_icecast2 (){
+    # https://stackoverflow.com/a/23009124
+    printf "\nKontrolli üle, kas andmed klapivad!\n\n"
+    printf "Sinu icecast paroolid on: $icecast_source_password, $icecast_relay_password, $icecast_admin_password \n"
+    printf "Sinu icecast serveri aadress on: $icecast_hostname \n"
+    printf "Sinu icecast serveri port on: $icecast_port \n"
+    printf "Sinu icecast serveri kasutajanimi on: $icecast_admin_user \n"
+}
+
+configure_butt () {
+    sed -i s/'address = .*'/'address = '$icecast_hostname/ konfid/.buttrc
+    sed -i s/'port = .*'/'port = '$icecast_port/ konfid/.buttrc
+    sed -i s/'password = .*'/'password = '$icecast_source_password/ konfid/.buttrc
 }
 
 read_icecast2
-read_butt
-echo $icecast_source_password
+echo_icecast2
+configure_butt

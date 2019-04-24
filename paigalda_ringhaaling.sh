@@ -73,7 +73,7 @@ choice () {
     fi
 }
 
-software=("sudo" "icecast2" "butt" "liquidsoap" "mixxx")
+software=("sudo" "icecast2" "butt" "liquidsoap" "youtube-dl" "mixxx")
 
 PS3='Vali soovitud tarkvara: ' 
 while :
@@ -113,6 +113,10 @@ do
                 choice 5
                 break
                 ;;
+            "${software[5]} ${opts[6]}")
+                choice 6
+                break
+                ;;
             "Valmis")
                 break 2
                 ;;
@@ -133,4 +137,4 @@ do
 done
 
 apt-get clean && apt-get autoremove
-printf "Kõik valitud tarkvara on paigaldatud.\n" 
+printf "\nKõik valitud tarkvara on paigaldatud.\n" 

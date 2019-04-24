@@ -7,27 +7,27 @@
 # juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]
 then
-    echo "$(basename $0) tuleb käivitada juurkasutaja õigustes."
+    printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
     exit 1
 fi
 
 error_stop () {
-    echo "Skriptis tekkis viga ja see peatati." && exit 1
+    printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
 }
 
-echo "Värskendan kogu süsteemi..."
+printf "Värskendan kogu süsteemi...\n"
 apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || error_stop
-echo "Süsteem on ajakohane."
+printf "Süsteem on ajakohane.\n"
 
 install_butt () {
     which butt > /dev/null 2>&1
 
     if [ $? -ne 0 ]
     then
-        echo "butt pole paigaldatud. Paigaldame programmi butt..."
+        printf "butt pole paigaldatud. Paigaldame programmi butt...\n"
         # uue ja vana korraga paigaldamine pole näpukas, vaid vajalik et programmi värskeim versioon tööle hakkaks
         install_latest_butt && install_old_butt || error_stop
-        echo "butt paigaldatud."
+        printf "butt paigaldatud.\n"
     fi
 }
 
@@ -55,9 +55,9 @@ apt_install () {
 
     if [ $? -ne 0 ]
     then
-        echo "$appname pole paigaldatud. Paigaldame programmi $appname..."
+        printf "$appname pole paigaldatud. Paigaldame programmi $appname...\n"
         apt-get install $1 -y || error_stop
-        echo "$appname paigaldatud"
+        printf "$appname paigaldatud\n"
     fi
 }
 
@@ -79,10 +79,10 @@ PS3='Vali soovitud tarkvara: '
 while :
 do
     clear
-    printf 'Icecast2 tuleb paigaldamisel kohe seadistada. Loe juhendit! %s\n'
-    printf 'Valiku tegemiseks sisesta vastava programmi number ja vajuta sisestusklahvi. %s\n'
-    printf 'Valiku tühistamiseks vali juba valitud programm uuesti. %s\n'
-    printf 'Väljumiseks vajuta CTRL+C %s\n\n'
+    printf 'Icecast2 tuleb paigaldamisel kohe seadistada. Loe juhendit!\n'
+    printf 'Valiku tegemiseks sisesta vastava programmi number ja vajuta sisestusklahvi.\n'
+    printf 'Valiku tühistamiseks vali juba valitud programm uuesti.\n'
+    printf 'Väljumiseks vajuta CTRL+C\n\n'
     options=("${software[0]} ${opts[1]}" \
               "${software[1]} ${opts[2]}" \
               "${software[2]} ${opts[3]}" \
@@ -133,4 +133,4 @@ do
 done
 
 apt-get clean && apt-get autoremove
-echo "Kõik valitud tarkvara on paigaldatud." 
+printf "Kõik valitud tarkvara on paigaldatud.\n" 

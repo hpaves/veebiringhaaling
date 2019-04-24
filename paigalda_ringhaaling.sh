@@ -4,10 +4,10 @@
 #Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
 #Juhend: sudo bash paigalda_ringhaaling.sh
 
-#Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
+# juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]
 then
-    echo "$(basename $0) tuleb käivitada juurkasutaja õigustes"
+    echo "$(basename $0) tuleb käivitada juurkasutaja õigustes."
     exit 1
 fi
 
@@ -25,6 +25,7 @@ install_butt () {
     if [ $? -ne 0 ]
     then
         echo "butt pole paigaldatud. Paigaldame programmi butt..."
+        # uue ja vana korraga paigaldamine pole näpukas, vaid vajalik et programmi värskeim versioon tööle hakkaks
         install_latest_butt && install_old_butt || error_stop
         echo "butt paigaldatud."
     fi
@@ -122,7 +123,7 @@ done
 
 for opt in "${!opts[@]}"
 do
-    if [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" = *"butt"* ]]
+    if [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" =~ butt ]]
     then
         install_butt
     elif [[ ${opts[opt]} ]]

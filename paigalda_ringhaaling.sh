@@ -73,7 +73,7 @@ choice () {
     fi
 }
 
-software=("sudo" "icecast2" "butt" "liquidsoap" "youtube-dl" "mixxx")
+software=("icecast2" "butt" "liquidsoap" "youtube-dl" "mixxx")
 
 PS3='Vali soovitud tarkvara: ' 
 while :
@@ -88,7 +88,6 @@ do
               "${software[2]} ${opts[3]}" \
               "${software[3]} ${opts[4]}" \
               "${software[4]} ${opts[5]}" \
-              "${software[5]} ${opts[6]}" \
               "Valmis")
     select opt in "${options[@]}"
     do
@@ -112,10 +111,6 @@ do
                 ;;
             "${software[4]} ${opts[5]}")
                 choice 5
-                break
-                ;;
-            "${software[5]} ${opts[6]}")
-                choice 6
                 break
                 ;;
             "Valmis")

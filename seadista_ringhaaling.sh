@@ -28,15 +28,19 @@ user_confirm () {
 }
 
 read_icecast2 (){
-    echo "sinu paroolid on:"
     # https://stackoverflow.com/a/23009124
-    grep -Po "(?<=<source-password>).*(?=<\/source-password>)" /etc/icecast2/icecast.xml
-    grep -Po "(?<=<relay-password>).*(?=<\/relay-password>)" /etc/icecast2/icecast.xml
-    grep -Po "(?<=<admin-password>).*(?=<\/admin-password>)" /etc/icecast2/icecast.xml
-
-    echo "sinu serveri aadress on:"
-    grep -Po "(?<=<hostname>).*(?=<\/hostname>)" /etc/icecast2/icecast.xml
-
-    echo "sinu kasutajanimi on:"
-    grep -Po "(?<=<admin-user>).*(?=<\/admin-user>)" /etc/icecast2/icecast.xml
+    icecast_source_password=$(grep -Po "(?<=<source-password>).*(?=<\/source-password>)" konfid/icecast.xml)
+    icecast_relay_password=$(grep -Po "(?<=<relay-password>).*(?=<\/relay-password>)" konfid/icecast.xml)
+    icecast_admin_password=$(grep -Po "(?<=<admin-password>).*(?=<\/admin-password>)" konfid/icecast.xml)
+    icecast_hostname=$(grep -Po "(?<=<hostname>).*(?=<\/hostname>)" konfid/icecast.xml)
+    icecast_port=$(grep -Pom1 "(?<=<port>).*(?=<\/port>)" konfid/icecast.xml)
+    icecast_admin_user=$(grep -Po "(?<=<admin-user>).*(?=<\/admin-user>)" konfid/icecast.xml)
 }
+
+read_butt () {
+    grep -Po "(?<=password = ).*$" konfid/.buttrc
+}
+
+read_icecast2
+read_butt
+echo $icecast_source_password

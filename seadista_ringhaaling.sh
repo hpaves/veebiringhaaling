@@ -11,16 +11,27 @@
 #     exit 1
 # fi
 
+# reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
+PS4=':$LINENO+'
+
 error_message () {
-    printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
+    # reanumbri väljastamiseks anna parameetriks: ${LINENO}
+    if [[ $1 ]]
+    then
+        printf "Skriptis tekkis viga real $1 ja see peatati.\n" && exit 1
+    else
+        printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
+    fi
 }
 
 linux_username=dj
 homedir=/home/$linux_username
-icecast_conf_file="konfid/icecast.xml"
+icecast_conf_file_location="konfid/icecast.xml"
+butt_conf_file_location="konfid/.buttrc"
+liquidsoap_conf_file_location="konfid/raadio.liq"
 
+# sisengi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 user_confirm () {
-    # ühe klahvivajutusega vastuvõtmine https://stackoverflow.com/a/1885534
     read -p "Teostan toimingu? [J/e] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Jj]$ ]]
@@ -31,17 +42,17 @@ user_confirm () {
     fi
 }
 
+# lookbehind kasutus: https://stackoverflow.com/a/23009124
 read_icecast_parameter () {
-    # lookbehind kasutus: https://stackoverflow.com/a/23009124
-    grep -Po "(?<=<$1>).*(?=<\/$1>)" $icecast_conf_file
+    grep -Po "(?<=<$1>).*(?=<\/$1>)" $icecast_conf_file_location
 }
 
 read_only_the_first_icecast_parameter_in_the_file () {
-    grep -Pom1 "(?<=<$1>).*(?=<\/$1>)" $icecast_conf_file
+    grep -Pom1 "(?<=<$1>).*(?=<\/$1>)" $icecast_conf_file_location
 }
 
 update_icecast_parameter () {
-    sed s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $icecast_conf_file
+    sed -i s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $icecast_conf_file_location
 }
 
 update_icecast_default_values () {
@@ -66,24 +77,34 @@ update_icecast_default_values () {
 }
 
 read_icecast_data (){
-    icecast_source_password=$(read_icecast_parameter source-password)
-    icecast_relay_password=$(read_icecast_parameter relay-password)
-    icecast_admin_password=$(read_icecast_parameter admin-password)
-    icecast_hostname=$(read_icecast_parameter hostname)
-    icecast_port=$(read_only_the_first_icecast_parameter_in_the_file port)
-    icecast_admin_user=$(read_icecast_parameter admin-user)
-    icecast_location=$(read_icecast_parameter location)
-    icecast_admin=$(read_icecast_parameter admin)
+    which icecast2 > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        icecast_source_password=$(read_icecast_parameter source-password)
+        icecast_relay_password=$(read_icecast_parameter relay-password)
+        icecast_admin_password=$(read_icecast_parameter admin-password)
+        icecast_hostname=$(read_icecast_parameter hostname)
+        icecast_port=$(read_only_the_first_icecast_parameter_in_the_file port)
+        icecast_admin_user=$(read_icecast_parameter admin-user)
+        icecast_location=$(read_icecast_parameter location)
+        icecast_admin=$(read_icecast_parameter admin)
+    fi
 }
 
-# privaatse ipv4 filtreerimine https://unix.stackexchange.com/a/119272
+print_filename_sans_path_and_extension () {
+    # töödeldav fail ei tohi olla peidetud
+    printf $1 | grep -Po "(?<=\/)\w*(?=\.*)"
+}
+
+# privaatse ipv4 aadressi filtreerimine https://unix.stackexchange.com/a/119272
 private_ipv4 () {
-ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'
+    ip a | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'
 }
 
 print_icecast_data (){
     printf "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\n"
-    printf "Sinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $private_ipv4\n"
+    print_printf "Sinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $(private_ipv4)\n"
     printf "Sinu icecast serveri port on: $icecast_port\n"
     printf "Sinu icecast meediavoo ühendamise parool on: $icecast_source_password\n"
     printf "Sinu icecast relee seadistamise parool on: $icecast_relay_password\n"
@@ -92,28 +113,37 @@ print_icecast_data (){
 }
 
 verify_icecast_conf () {
-    read_icecast
+    read_icecast_data
     printf "\nKontrolli üle, kas andmed klapivad!\n\n"
     print_icecast_data
+    printf '\n'
 }
 
 configure_butt () {
-    buttrc_location="konfid/.buttrc"
-    sed -i s/'address = .*'/'address = '$icecast_hostname/ $buttrc_location
-    sed -i s/'port = .*'/'port = '$icecast_port/ $buttrc_location
-    sed -i s/'password = .*'/'password = '$icecast_source_password/ $buttrc_location
-    sed -i s/'folder = .*'/'folder = /home/'$linux_username'/salvestused/'/ $buttrc_location
+    which butt > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
+        sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location
+        sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location
+        sed -i s/'folder = .*'/'folder = \/home\/'$linux_username'\/salvestused\/'/ $butt_conf_file_location
+    fi
 }
 
 configure_liquidsoap () {
-    liquidsoap_conf_file="konfid/raadio2.liq"
-    liquidconf_name_stripped=$(echo $liquidsoap_conf_file | grep -Po "(?<=\/)\w*(?=\.liq)")
-    sed -i s/'set("log.file.path",.*'/'set("log.file.path","\/tmp\/'$liquidconf_name_stripped'.log")'/ $liquidsoap_conf_file
-    sed -i s/'default = single.*'/'default = single("\/home\/'$linux_username'\/helid\/vaikimisi.ogg")'/ $liquidsoap_conf_file
-    sed -i s/'music   = playlist.*'/'music   = playlist("\/home\/'$linux_username'\/helid\/muusika.pls")'/ $liquidsoap_conf_file
-    sed -i s/'jingles = playlist.*'/'jingles = playlist("\/home\/'$linux_username'\/helid\/teated.pls")'/ $liquidsoap_conf_file
-    sed -i s/'\[input.http.*'/'\[input.http("http:\/\/'$icecast_hostname':'$icecast_port'\/otse-eeter.ogg"),'/ $liquidsoap_conf_file
-    sed -i s/'host=.*'/'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'/ $liquidsoap_conf_file
+    which liquidsoap > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
+        sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location
+        sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location
+        sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.pls")'% $liquidsoap_conf_file_location
+        sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.pls")'% $liquidsoap_conf_file_location
+        sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location
+        sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location
+    fi
 }
 
 read_icecast_data
@@ -121,7 +151,6 @@ update_icecast_default_values
 verify_icecast_conf
 configure_butt
 configure_liquidsoap
-
 
 # mkdir -p $homedir/{helid/{muusika,teated},salvestused}
 # groupadd veebiringhaaling

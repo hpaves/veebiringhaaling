@@ -25,7 +25,7 @@ exit_with_error () {
 }
 
 printf "Värskendan kogu süsteemi...\n"
-apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error
+apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error ${LINENO}
 printf "Süsteem on ajakohane.\n"
 
 apt_install () {
@@ -56,20 +56,32 @@ install_butt () {
 
 install_latest_butt () {
     # butt install fix https://stackoverflow.com/questions/27955600/broadcast-using-this-tool-butt-install-issues
-    apt-get install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev 
-    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download
-    mkdir butt_installer
-    tar -xzf butt-*.tar.gz -C butt_installer --strip-components 1
-    cd butt_installer
-    ./configure --disable-aac
-    make
-    make install
+    apt-get install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev  || exit_with_error ${LINENO}
+    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download || exit_with_error ${LINENO}
+    mkdir butt_installer || exit_with_error ${LINENO}
+    tar -xzf butt-*.tar.gz -C butt_installer --strip-components 1 || exit_with_error ${LINENO}
+    cd butt_installer || exit_with_error ${LINENO}
+    ./configure --disable-aac || exit_with_error ${LINENO}
+    make || exit_with_error ${LINENO}
+    make install || exit_with_error ${LINENO}
 }
 
 install_old_butt () {
-    apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev
-    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download
-    dpkg -i butt*.deb
+    apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev || exit_with_error ${LINENO}
+    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download || exit_with_error ${LINENO}
+    dpkg -i butt*.deb || exit_with_error ${LINENO}
+}
+
+install_youtube-dl () {
+    which youtube-dl > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        printf "youtube-dl pole paigaldatud. Paigaldame programmi youtube-dl...\n"
+        curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl || exit_with_error ${LINENO}
+        chmod a+rx /usr/local/bin/youtube-dl || exit_with_error ${LINENO}
+        printf "youtube-dl paigaldatud.\n"
+    fi
 }
 
 # Toggleable flags to indicate choices - Dennis Williamson

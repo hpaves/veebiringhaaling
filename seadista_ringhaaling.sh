@@ -4,10 +4,19 @@
 # Otstarve: Loeb Icecast2 seadistused ja kasutab neid muude vabavaralise veebringhäälingu komponentide seadistamiseks
 # Juhend: sudo bash seadista_ringhaaling.sh <linux_kasutajanimi>
 
-Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
+# Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]
 then
     printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
+    exit 1
+fi
+
+# argumentide arvu kontroll
+if [ $# -eq 1 ]
+then
+    linux_username=$1
+else
+    echo "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>"
     exit 1
 fi
 
@@ -28,7 +37,6 @@ error_issues_with_program () {
     printf "\n%s pole paigaldatud või selle seadistusfail pole kirjutatav/loetav.\n" "$1"
 }
 
-linux_username=$1
 homedir=/home/$linux_username
 
 icecast_default_file_copy="$homedir/veebiringhaaling/mallid/icecast.xml"
@@ -87,11 +95,11 @@ update_icecast_default_values () {
     fi
 
     printf "\nSinu icecast teenust saab hetkel maksimaalselt kuulata %s kuulajat.\n" $icecast_clients
-    read -p "Määra endale sobiv maksimaalsete kuulajate arv.\n"
+    read -p "Määra endale sobiv maksimaalsete kuulajate arv: " -r
     update_icecast_parameter clients $REPLY
 
     printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.n\Kõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
-    read -p "Määra endale sobiv maksimaalsete sisendvoogude arv.\n"
+    read -p "Määra endale sobiv maksimaalsete sisendvoogude arv: " -r
     update_icecast_parameter sources $REPLY
 
 }

@@ -30,6 +30,12 @@ error_issues_with_program () {
 
 linux_username=$1
 homedir=/home/$linux_username
+
+icecast_default_file_copy="$homedir/veebiringhaaling/mallid/icecast.xml"
+butt_template_file_location="$homedir/veebiringhaaling/mallid/.buttrc"
+liquidsoap_template_file_location="$homedir/veebiringhaaling/mallid/raadio.liq"
+youtubedl_template_file_location="$homedir/veebiringhaaling/mallid/config"
+
 icecast_conf_file_location="/etc/icecast2/icecast.xml"
 butt_conf_file_location="$homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquisoap/raadio.liq"
@@ -79,6 +85,15 @@ update_icecast_default_values () {
         read -p "Palun sisesta uus (ilma täpitähtedeta) kasutajanimi: " -r
         update_icecast_parameter admin-user $REPLY
     fi
+
+    printf "\nSinu icecast teenust saab hetkel maksimaalselt kuulata %s kuulajat.\n" $icecast_clients
+    read -p "Määra endale sobiv maksimaalsete kuulajate arv.\n"
+    update_icecast_parameter clients $REPLY
+
+    printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.n\Kõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
+    read -p "Määra endale sobiv maksimaalsete sisendvoogude arv.\n"
+    update_icecast_parameter sources $REPLY
+
 }
 
 read_icecast_data () {
@@ -86,6 +101,8 @@ read_icecast_data () {
 
     if [[ $? -eq 0 && -r $icecast_conf_file_location && -w $icecast_conf_file_location ]]
     then
+        icecast_clients=$(read_icecast_parameter clients)
+        icecast_sources=$(read_icecast_parameter sources)
         icecast_source_password=$(read_icecast_parameter source-password)
         icecast_relay_password=$(read_icecast_parameter relay-password)
         icecast_admin_password=$(read_icecast_parameter admin-password)
@@ -133,7 +150,7 @@ configure_butt () {
 
     if [[ $? -eq 0 ]]
     then
-        cp $homedir/veebiringhaaling/mallid/.buttrc $butt_conf_file_location || exit_with_error ${LINENO}
+        cp $butt_template_file_location $butt_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $butt_conf_file_location && -w $butt_conf_file_location ]]
         then
             sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
@@ -149,7 +166,7 @@ configure_liquidsoap () {
 
     if [[ $? -eq 0 ]]
     then
-        cp $homedir/veebiringhaaling/mallid/raadio.liq $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+        cp $liquidsoap_template_file_location $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $liquidsoap_conf_file_location && -w $liquidsoap_conf_file_location ]]
         then
             liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
@@ -169,7 +186,7 @@ configure_youtubedl () {
     if [[ $? -eq 0 ]]
     then
         mkdir p $homedir/.config/youtube-dl/
-        cp $homedir/veebiringhaaling/mallid/config $youtubedl_conf_file_location || exit_with_error ${LINENO}
+        cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
             sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location

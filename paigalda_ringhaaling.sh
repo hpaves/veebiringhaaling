@@ -72,7 +72,7 @@ install_old_butt () {
     dpkg -i butt*.deb || exit_with_error ${LINENO}
 }
 
-install_youtube-dl () {
+install_youtubedl () {
     which youtube-dl > /dev/null 2>&1
 
     if [ $? -ne 0 ]
@@ -149,6 +149,9 @@ do
     if [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" =~ butt ]]
     then
         install_butt
+    elif [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" =~ youtube-dl ]]
+    then
+        install_youtubedl
     elif [[ ${opts[opt]} ]]
     then
       apt_install ${software[opt-1]}

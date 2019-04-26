@@ -19,6 +19,20 @@ printf "Värskendan kogu süsteemi...\n"
 apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || error_stop
 printf "Süsteem on ajakohane.\n"
 
+apt_install () {
+    local appname=$1
+    which $appname > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        printf "$appname pole paigaldatud. Paigaldame programmi $appname...\n"
+        apt-get install $1 -y || error_stop
+        printf "$appname paigaldatud\n"
+    fi
+}
+
+apt_install curl
+
 install_butt () {
     which butt > /dev/null 2>&1
 
@@ -34,7 +48,7 @@ install_butt () {
 install_latest_butt () {
     # butt install fix https://stackoverflow.com/questions/27955600/broadcast-using-this-tool-butt-install-issues
     apt-get install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev 
-    wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download
+    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download
     mkdir butt_installer
     tar -xzf butt-*.tar.gz -C butt_installer --strip-components 1
     cd butt_installer
@@ -45,20 +59,8 @@ install_latest_butt () {
 
 install_old_butt () {
     apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev
-    wget --content-disposition https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download
+    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download
     dpkg -i butt*.deb
-}
-
-apt_install () {
-    local appname=$1
-    which $appname > /dev/null 2>&1
-
-    if [ $? -ne 0 ]
-    then
-        printf "$appname pole paigaldatud. Paigaldame programmi $appname...\n"
-        apt-get install $1 -y || error_stop
-        printf "$appname paigaldatud\n"
-    fi
 }
 
 # Toggleable flags to indicate choices - Dennis Williamson

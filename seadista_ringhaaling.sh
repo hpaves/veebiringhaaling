@@ -197,17 +197,18 @@ configure_youtubedl () {
 
 read_icecast_data
 print_icecast_data
-# update_icecast_default_values
-# verify_icecast_conf
-# configure_butt
-# configure_liquidsoap
+update_icecast_default_values
+verify_icecast_conf
+configure_butt
+configure_liquidsoap
 configure_youtubedl
 
-# mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
-# groupadd veebiringhaaling
-# usermod -a -G veebiringhaaling $linux_username
-# usermod -a -G veebiringhaaling icecast2
-# usermod -a -G veebiringhaaling liquidsoap
-# chown -R :veebiringhaaling $homedir/{helid,salvestused}
-# chmod -R 750 $homedir/helid
-# chmod -R 754 $homedir/salvestused
+mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
+printf "# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.\nIgale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.\n\n" > $homedir/helid/esitusloendid.txt
+groupadd veebiringhaaling
+usermod -a -G veebiringhaaling $linux_username
+usermod -a -G veebiringhaaling icecast2
+usermod -a -G veebiringhaaling liquidsoap
+chown -R :veebiringhaaling $homedir/{helid,salvestused}
+chmod -R 750 $homedir/helid
+chmod -R 754 $homedir/salvestused

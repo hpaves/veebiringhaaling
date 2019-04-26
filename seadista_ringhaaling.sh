@@ -49,6 +49,17 @@ butt_conf_file_location="$homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$homedir/.config/youtube-dl/config"
 
+mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
+touch $homedir/helid/{muusika.m3u,saated.m3u,teated.m3u}
+printf "# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.\nIgale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.\n\n" > $homedir/helid/esitusloendid.txt
+groupadd veebiringhaaling
+usermod -a -G veebiringhaaling $linux_username
+usermod -a -G veebiringhaaling icecast2
+usermod -a -G veebiringhaaling liquidsoap
+chown -R :veebiringhaaling $homedir/{helid,salvestused}
+chmod -R 750 $homedir/helid
+chmod -R 754 $homedir/salvestused
+
 # sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 user_confirm () {
     read -p "Teostan toimingu? [J/e] " -n 1 -r
@@ -56,7 +67,7 @@ user_confirm () {
     if [[ $REPLY =~ ^[Jj]$ ]]
     then
         echo yes
-    else 
+    else
         echo no
     fi
 }
@@ -209,13 +220,3 @@ verify_icecast_conf
 configure_butt
 configure_liquidsoap
 configure_youtubedl
-
-mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
-printf "# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.\nIgale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.\n\n" > $homedir/helid/esitusloendid.txt
-groupadd veebiringhaaling
-usermod -a -G veebiringhaaling $linux_username
-usermod -a -G veebiringhaaling icecast2
-usermod -a -G veebiringhaaling liquidsoap
-chown -R :veebiringhaaling $homedir/{helid,salvestused}
-chmod -R 750 $homedir/helid
-chmod -R 754 $homedir/salvestused

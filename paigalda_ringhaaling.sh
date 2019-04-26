@@ -11,12 +11,21 @@ then
     exit 1
 fi
 
-error_stop () {
-    printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
+# reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
+PS4=':$LINENO+'
+
+exit_with_error () {
+    # reanumbri väljastamiseks anna parameetriks: ${LINENO}
+    if [[ $1 ]]
+    then
+        printf "Skriptis tekkis viga real $1 ja see peatati.\n" && exit 1
+    else
+        printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
+    fi
 }
 
 printf "Värskendan kogu süsteemi...\n"
-apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || error_stop
+apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error
 printf "Süsteem on ajakohane.\n"
 
 apt_install () {
@@ -26,7 +35,7 @@ apt_install () {
     if [ $? -ne 0 ]
     then
         printf "$appname pole paigaldatud. Paigaldame programmi $appname...\n"
-        apt-get install $1 -y || error_stop
+        apt-get install $1 -y || exit_with_error
         printf "$appname paigaldatud\n"
     fi
 }
@@ -40,7 +49,7 @@ install_butt () {
     then
         printf "butt pole paigaldatud. Paigaldame programmi butt...\n"
         # uue ja vana korraga paigaldamine pole näpukas, vaid vajalik et programmi värskeim versioon tööle hakkaks
-        install_latest_butt && install_old_butt || error_stop
+        install_latest_butt && install_old_butt || exit_with_error
         printf "butt paigaldatud.\n"
     fi
 }

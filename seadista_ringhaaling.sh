@@ -46,7 +46,7 @@ youtubedl_template_file_location="$homedir/veebiringhaaling/mallid/config"
 
 icecast_conf_file_location="/etc/icecast2/icecast.xml"
 butt_conf_file_location="$homedir/.buttrc"
-liquidsoap_conf_file_location="/etc/liquisoap/raadio.liq"
+liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$homedir/.config/youtube-dl/config"
 
 # sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
@@ -98,7 +98,7 @@ update_icecast_default_values () {
     read -p "Määra endale sobiv maksimaalsete kuulajate arv: " -r
     update_icecast_parameter clients $REPLY
 
-    printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.n\Kõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
+    printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.\nKõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
     read -p "Määra endale sobiv maksimaalsete sisendvoogude arv: " -r
     update_icecast_parameter sources $REPLY
 
@@ -204,7 +204,6 @@ configure_youtubedl () {
 }
 
 read_icecast_data
-print_icecast_data
 update_icecast_default_values
 verify_icecast_conf
 configure_butt

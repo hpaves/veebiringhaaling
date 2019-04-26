@@ -1,0 +1,2 @@
+# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.
+# Igale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.

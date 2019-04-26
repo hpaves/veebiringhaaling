@@ -51,11 +51,13 @@ youtubedl_conf_file_location="$homedir/.config/youtube-dl/config"
 
 mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
 touch $homedir/helid/{muusika.m3u,saated.m3u,teated.m3u}
-printf "# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.\nIgale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.\n\n" > $homedir/helid/esitusloendid.txt
+mv esitusloendid.txt $homedir/helid/esitusloendid.txt
+mv v2rskenda_esitusloendeid.sh $homedir/helid/v2rskenda_esitusloendeid.sh
 groupadd veebiringhaaling
 usermod -a -G veebiringhaaling $linux_username
 usermod -a -G veebiringhaaling icecast2
 usermod -a -G veebiringhaaling liquidsoap
+chown -R $linux_username:$linux_username $homedir
 chown -R :veebiringhaaling $homedir/{helid,salvestused}
 chmod -R 750 $homedir/helid
 chmod -R 754 $homedir/salvestused

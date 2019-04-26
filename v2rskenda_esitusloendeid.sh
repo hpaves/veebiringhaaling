@@ -1,7 +1,7 @@
 #!/bin/bash
 # Autor: Henri Paves
 # Versioon: 0.1
-# Otstarve: Loob igast endaga samal tasemel olevast kaustast esitusnimekirjad
+# Otstarve: Loob igast endaga samal tasemel olevast kaustast esitusloendeid
 # Juhend: bash v2rskenda_esitusloendeid.sh
 
 # juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
@@ -11,13 +11,13 @@ then
     exit 1
 fi
 
-playlist_repository="$PWD/esitusnimekirjad.txt"
+playlist_repository="$PWD/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]
 then
     youtube-dl -a $playlist_repository
 else
-    printf "Skript katkes kuna ei saa esitusnimekirjade faili lugeda/kirjutada.\n" && exit 1
+    printf "Skript katkes kuna ei saa esitusloendite faili lugeda/kirjutada.\n" && exit 1
 fi
 
 printf "\n"

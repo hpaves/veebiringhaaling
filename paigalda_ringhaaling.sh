@@ -1,5 +1,5 @@
 #!/bin/bash
-#Autor: Henri Paves 
+#Autor: Henri Paves
 #Versioon: 0.1
 #Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
 #Juhend: sudo bash paigalda_ringhaaling.sh
@@ -98,7 +98,7 @@ choice () {
 
 software=("icecast2" "butt" "liquidsoap" "youtube-dl" "mixxx")
 
-PS3='Vali soovitud tarkvara: ' 
+PS3='Vali soovitud tarkvara: '
 while :
 do
     clear
@@ -115,7 +115,6 @@ do
     select opt in "${options[@]}"
     do
         case $opt in
-            
             "${software[0]} ${opts[1]}")
                 choice 1
                 break
@@ -158,5 +157,5 @@ do
     fi
 done
 
-apt-get clean && apt-get autoremove
-printf "\nKõik valitud tarkvara on paigaldatud.\n" 
+apt-get clean && apt-get autoremove -y
+printf "\nKõik valitud tarkvara on paigaldatud.\n"

@@ -1,0 +1,18 @@
+# see on youtube-dl seadistusfail, mis peab asuma kaustas ~/.config/youtube-dl/
+# need seadistused kehtivad kõikidele antud kasutaja youtube-dl käskudele
+# seadistuste ignoreerimiseks käsurealt kasuta võtit --ignore-config
+
+# ignoreerib veateateid ja jätkab nendest hoolimata muude failide tõmbamist
+-i
+
+# teisendab tõmmatud failid helivormingusse
+-x
+
+# määrab helivorminguks ogg/vorbis
+--audio-format vorbis
+
+# jätab meelde millised failid on juba tõmmatud
+--download-archive "/home/dj/helid/youtube_allalaadimiste_arhiiv.txt"
+
+# tõmmatavate failide vaikimisi kaust ja failinime vorming
+-o "/home/dj/helid/muusika/%(title)s %(id)s.%(ext)s"

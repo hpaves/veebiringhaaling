@@ -2,14 +2,14 @@
 #Autor: Henri Paves 
 #Versioon: 0.1
 #Otstarve: Loeb Icecast2 seadistused ja kasutab neid muude vabavaralise veebringhäälingu komponentide seadistamiseks
-#Juhend: sudo bash seadista_ringhaaling.sh
+#Juhend: sudo bash seadista_ringhaaling.sh <linux_kasutajanimi>
 
-#Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
-# if [ $UID -ne 0 ]
-# then
-#     printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
-#     exit 1
-# fi
+Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
+if [ $UID -ne 0 ]
+then
+    printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
+    exit 1
+fi
 
 # reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
 PS4=':$LINENO+'
@@ -28,14 +28,14 @@ error_issues_with_program () {
     printf "\n%s pole paigaldatud või selle seadistusfail pole kirjutatav/loetav.\n" "$1"
 }
 
-linux_username=dj
+linux_username=$1
 homedir=/home/$linux_username
-icecast_conf_file_location="konfid/icecast.xml"
-butt_conf_file_location="konfid/.buttrc"
-liquidsoap_conf_file_location="konfid/raadio.liq"
-youtubedl_conf_file_location="konfid/config"
+icecast_conf_file_location="/etc/icecast2/icecast.xml"
+butt_conf_file_location="$homedir/.buttrc"
+liquidsoap_conf_file_location="/etc/liquisoap/raadio.liq"
+youtubedl_conf_file_location="$homedir/.config/youtube-dl/config"
 
-# sisengi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
+# sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 user_confirm () {
     read -p "Teostan toimingu? [J/e] " -n 1 -r
     echo
@@ -131,37 +131,50 @@ verify_icecast_conf () {
 configure_butt () {
     which butt > /dev/null 2>&1
 
-    if [[ $? -eq 0 && -r $butt_conf_file_location && -w $butt_conf_file_location ]]
+    if [[ $? -eq 0 ]]
     then
-        sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
-        sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location
-        sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location
-        sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location
+        cp $homedir/veebiringhaaling/mallid/.buttrc $butt_conf_file_location || exit_with_error ${LINENO}
+        if [[ -r $butt_conf_file_location && -w $butt_conf_file_location ]]
+        then
+            sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
+            sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location
+            sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location
+            sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location
+        fi
     fi
 }
 
 configure_liquidsoap () {
     which liquidsoap > /dev/null 2>&1
 
-    if [[ $? -eq 0 && -r $liquidsoap_conf_file_location && -w $liquidsoap_conf_file_location ]]
+    if [[ $? -eq 0 ]]
     then
-        liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
-        sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location
-        sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location
-        sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.pls")'% $liquidsoap_conf_file_location
-        sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.pls")'% $liquidsoap_conf_file_location
-        sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location
-        sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location
+        cp $homedir/veebiringhaaling/mallid/raadio.liq $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+        if [[ -r $liquidsoap_conf_file_location && -w $liquidsoap_conf_file_location ]]
+        then
+            liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
+            sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location
+            sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location
+            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.pls")'% $liquidsoap_conf_file_location
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.pls")'% $liquidsoap_conf_file_location
+            sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location
+            sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location
+        fi
     fi
 }
 
 configure_youtubedl () {
     which youtube-dl > /dev/null 2>&1
 
-    if [[ $? -eq 0 && -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
+    if [[ $? -eq 0 ]]
     then
-        sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location
-        sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location
+        mkdir p $homedir/.config/youtube-dl/
+        cp $homedir/veebiringhaaling/mallid/config $youtubedl_conf_file_location || exit_with_error ${LINENO}
+        if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
+        then
+            sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location
+            sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location
+        fi
     fi
 }
 
@@ -173,7 +186,7 @@ print_icecast_data
 # configure_liquidsoap
 configure_youtubedl
 
-# mkdir -p $homedir/{helid/{muusika,teated},salvestused}
+# mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
 # groupadd veebiringhaaling
 # usermod -a -G veebiringhaaling $linux_username
 # usermod -a -G veebiringhaaling icecast2
@@ -181,5 +194,3 @@ configure_youtubedl
 # chown -R :veebiringhaaling $homedir/{helid,salvestused}
 # chmod -R 750 $homedir/helid
 # chmod -R 754 $homedir/salvestused
-
-# meelespead: ip staatiliseks, lõpus restart (gruppidesse lisamise aktiveerumiseks jms)

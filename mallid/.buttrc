@@ -1,0 +1,60 @@
+#This is a configuration file for butt (broadcast using this tool)
+
+[main]
+bg_color = 151540480
+txt_color = -256
+server = automaatne_seadistus
+srv_ent = automaatne_seadistus
+icy = 
+icy_ent = 
+num_of_srv = 1
+num_of_icy = 0
+song_path = 
+song_update = 0
+app_update_service = 0
+app_update = 0
+gain = 1.000000
+connect_at_startup = 0
+log_file = 
+
+[audio]
+device = 0
+samplerate = 44100
+bitrate = 128
+channel = 2
+codec = ogg
+aac_overwrite_aot = 0
+aac_aot = 5
+resample_mode = 0
+buffer_ms = 50
+
+[record]
+bitrate = 192
+codec = ogg
+start_rec = 1
+sync_to_hour  = 0
+split_time = 0
+filename = salvestus_%Y-%m-%d_%H-%M-%S.ogg
+folder = /home/dj/salvestused/
+
+[dsp]
+equalizer = 0
+gain1 = 0.000000
+gain2 = 0.000000
+gain3 = 0.000000
+gain4 = 0.000000
+gain5 = 0.000000
+
+[gui]
+attach = 0
+ontop = 0
+lcd_auto = 0
+
+[automaatne_seadistus]
+address = localhost
+port = 8000
+password = hackme
+type = 1
+mount = otse-eeter.ogg
+usr = source
+

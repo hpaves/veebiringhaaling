@@ -172,8 +172,8 @@ configure_liquidsoap () {
             liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location
             sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location
-            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.pls")'% $liquidsoap_conf_file_location
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.pls")'% $liquidsoap_conf_file_location
+            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.m3u")'% $liquidsoap_conf_file_location
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.m3u")'% $liquidsoap_conf_file_location
             sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location
             sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location
         fi

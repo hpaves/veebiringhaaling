@@ -15,8 +15,8 @@ set("server.telnet", true)
 
 default = single("/home/dj/helid/vaikimisi.ogg")
 
-music   = playlist("/home/dj/helid/muusika.pls")
-jingles = playlist("/home/dj/helid/teated.pls")
+music   = playlist("/home/dj/helid/muusika.m3u")
+jingles = playlist("/home/dj/helid/teated.m3u")
 
 # Play user requests if there are any,
 # otherwise one of our playlists,

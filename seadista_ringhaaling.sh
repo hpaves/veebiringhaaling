@@ -33,6 +33,7 @@ homedir=/home/$linux_username
 icecast_conf_file_location="konfid/icecast.xml"
 butt_conf_file_location="konfid/.buttrc"
 liquidsoap_conf_file_location="konfid/raadio.liq"
+youtubedl_conf_file_location="konfid/config"
 
 # sisengi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 user_confirm () {
@@ -135,7 +136,7 @@ configure_butt () {
         sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
         sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location
         sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location
-        sed -i s/'folder = .*'/'folder = \/home\/'$linux_username'\/salvestused\/'/ $butt_conf_file_location
+        sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location
     fi
 }
 
@@ -154,12 +155,23 @@ configure_liquidsoap () {
     fi
 }
 
+configure_youtubedl () {
+    which youtube-dl > /dev/null 2>&1
+
+    if [[ $? -eq 0 && -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
+    then
+        sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location
+        sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location
+    fi
+}
+
 read_icecast_data
 print_icecast_data
 # update_icecast_default_values
 # verify_icecast_conf
 # configure_butt
 # configure_liquidsoap
+configure_youtubedl
 
 # mkdir -p $homedir/{helid/{muusika,teated},salvestused}
 # groupadd veebiringhaaling

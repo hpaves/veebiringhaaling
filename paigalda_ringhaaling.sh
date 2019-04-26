@@ -1,8 +1,8 @@
 #!/bin/bash
-#Autor: Henri Paves
-#Versioon: 0.1
-#Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
-#Juhend: sudo bash paigalda_ringhaaling.sh
+# Autor: Henri Paves
+# Versioon: 0.1
+# Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
+# Juhend: sudo bash paigalda_ringhaaling.sh
 
 # juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]

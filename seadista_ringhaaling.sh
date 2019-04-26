@@ -1,8 +1,8 @@
 #!/bin/bash
-#Autor: Henri Paves 
-#Versioon: 0.1
-#Otstarve: Loeb Icecast2 seadistused ja kasutab neid muude vabavaralise veebringhäälingu komponentide seadistamiseks
-#Juhend: sudo bash seadista_ringhaaling.sh <linux_kasutajanimi>
+# Autor: Henri Paves 
+# Versioon: 0.1
+# Otstarve: Loeb Icecast2 seadistused ja kasutab neid muude vabavaralise veebringhäälingu komponentide seadistamiseks
+# Juhend: sudo bash seadista_ringhaaling.sh <linux_kasutajanimi>
 
 Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]

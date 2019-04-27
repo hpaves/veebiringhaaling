@@ -205,7 +205,7 @@ configure_youtubedl () {
 
     if [[ $? -eq 0 ]]
     then
-        mkdir p $homedir/.config/youtube-dl/
+        mkdir -p $homedir/.config/youtube-dl/
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then

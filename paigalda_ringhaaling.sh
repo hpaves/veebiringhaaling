@@ -102,5 +102,5 @@ install_butt
 install_youtubedl
 apt-get clean && apt-get autoremove -y
 
-bash seadista_ringhaaling.sh "$linux_username" && nano /home/$linux_username/helid/esitusloendid.txt && su $linux_username && bash home/$linux_username/helid/v2rskenda_esindusloendeid.sh || exit_with_error ${LINENO}
+bash seadista_ringhaaling.sh "$linux_username" && nano /home/$linux_username/helid/esitusloendid.txt && su $linux_username && bash home/$linux_username/helid/v2rskenda_esitusloendeid.sh && logout || exit_with_error ${LINENO}
 reboot

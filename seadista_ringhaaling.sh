@@ -64,7 +64,7 @@ icecast_password_save_option () {
     echo
     if [[ $REPLY =~ ^[Jj]$ ]]
     then
-        print_icecast_data > $homedir/$linux_username/serveri_andmed.txt
+        print_icecast_data > $homedir/serveri_andmed.txt
     fi
 }
 

@@ -49,7 +49,8 @@ apt_install () {
     fi
 }
 
-apt_install curl ffmpeg
+apt_install curl
+apt install ffmpeg
 
 install_butt () {
     which butt > /dev/null 2>&1
@@ -95,12 +96,11 @@ install_youtubedl () {
     fi
 }
 
-apt_install icecast2 liquidsoap
+apt_install icecast2
+apt install liquidsoap
 install_butt
 install_youtubedl
 apt-get clean && apt-get autoremove -y
 
-./seadista_ringhaaling.sh $linux_username || exit_with_error ${LINENO}
-nano /home/$linux_username/helid/esitusloendid.txt || exit_with_error ${LINENO}
-./home/$linux_username/helid/v2rskenda_esindusloendeid.sh || exit_with_error ${LINENO}
+./seadista_ringhaaling.sh "$linux_username" && nano /home/$linux_username/helid/esitusloendid.txt && ./home/$linux_username/helid/v2rskenda_esindusloendeid.sh || exit_with_error ${LINENO}
 reboot

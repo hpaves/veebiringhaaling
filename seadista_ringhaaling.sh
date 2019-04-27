@@ -24,7 +24,7 @@ fi
 PS4=':$LINENO+'
 
 exit_with_error () {
-    # reanumbri väljastamiseks anna parameetriks: ${LINENO}
+    # reanumbri väljastamiseks kasuta: || exit_with_error ${LINENO}
     if [[ $1 ]]
     then
         printf "Skriptis tekkis viga real $1 ja see peatati.\n" && exit 1
@@ -84,7 +84,7 @@ read_only_the_first_icecast_parameter_in_the_file () {
 }
 
 update_icecast_parameter () {
-    sed -i s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $icecast_conf_file_location
+    sed -i s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $icecast_conf_file_location || exit_with_error ${LINENO}
 }
 
 update_icecast_default_values () {
@@ -174,10 +174,10 @@ configure_butt () {
         cp $butt_template_file_location $butt_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $butt_conf_file_location && -w $butt_conf_file_location ]]
         then
-            sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location
-            sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location
-            sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location
-            sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location
+            sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location || exit_with_error ${LINENO}
+            sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location || exit_with_error ${LINENO}
+            sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
@@ -191,12 +191,12 @@ configure_liquidsoap () {
         if [[ -r $liquidsoap_conf_file_location && -w $liquidsoap_conf_file_location ]]
         then
             liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
-            sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location
-            sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location
-            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.m3u")'% $liquidsoap_conf_file_location
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.m3u")'% $liquidsoap_conf_file_location
-            sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location
-            sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location
+            sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
@@ -210,8 +210,8 @@ configure_youtubedl () {
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
-            sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location
-            sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location
+            sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }

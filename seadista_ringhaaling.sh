@@ -114,7 +114,6 @@ update_icecast_default_values () {
     printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.\nKõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
     read -p "Määra endale sobiv maksimaalsete sisendvoogude arv: " -r
     update_icecast_parameter sources $REPLY
-
 }
 
 read_icecast_data () {
@@ -139,9 +138,9 @@ read_icecast_data () {
     fi
 }
 
-print_filename_sans_path_and_extension () {
+print_filename_without_path_and_extension () {
     # töödeldav fail ei tohi olla peidetud
-    printf $1 | grep -Po "(?<=\/)\w*(?=\.*)"
+    printf $1 | grep -Po "(?<=\/)\w*(?=\..*)"
 }
 
 # privaatse ipv4 aadressi filtreerimine https://unix.stackexchange.com/a/119272
@@ -190,7 +189,7 @@ configure_liquidsoap () {
         cp $liquidsoap_template_file_location $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $liquidsoap_conf_file_location && -w $liquidsoap_conf_file_location ]]
         then
-            liquidsoap_logfile_name=$(print_filename_sans_path_and_extension $liquidsoap_conf_file_location)
+            liquidsoap_logfile_name=$(print_filename_without_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}

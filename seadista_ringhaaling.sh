@@ -57,7 +57,7 @@ groupadd veebiringhaaling
 usermod -a -G veebiringhaaling $linux_username
 usermod -a -G veebiringhaaling icecast2
 usermod -a -G veebiringhaaling liquidsoap
-chown -R $linux_username:$linux_username $homedir
+chown -R $linux_username:$linux_username $homedir/.
 chown -R :veebiringhaaling $homedir/{helid,salvestused}
 chmod -R 750 $homedir/helid
 chmod -R 754 $homedir/salvestused

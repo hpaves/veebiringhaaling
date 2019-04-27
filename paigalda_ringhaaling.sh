@@ -40,7 +40,7 @@ apt_install () {
     fi
 }
 
-apt_install curl
+apt_install curl ffmpeg
 
 install_butt () {
     which butt > /dev/null 2>&1

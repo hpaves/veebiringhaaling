@@ -50,7 +50,7 @@ apt_install () {
 }
 
 apt_install curl
-apt install ffmpeg
+apt_install ffmpeg
 
 install_butt () {
     which butt > /dev/null 2>&1
@@ -97,7 +97,7 @@ install_youtubedl () {
 }
 
 apt_install icecast2
-apt install liquidsoap
+apt_install liquidsoap
 install_butt
 install_youtubedl
 apt-get clean && apt-get autoremove -y

@@ -15,7 +15,7 @@ fi
 PS4=':$LINENO+'
 
 exit_with_error () {
-    # reanumbri väljastamiseks anna parameetriks: ${LINENO}
+    # reanumbri väljastamiseks kasuta: || exit_with_error ${LINENO}
     if [[ $1 ]]
     then
         printf "Skriptis tekkis viga real $1 ja see peatati.\n" && exit 1
@@ -64,12 +64,14 @@ install_latest_butt () {
     ./configure --disable-aac || exit_with_error ${LINENO}
     make || exit_with_error ${LINENO}
     make install || exit_with_error ${LINENO}
+    rm -rf butt-*.tar.gz butt_installer
 }
 
 install_old_butt () {
     apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev || exit_with_error ${LINENO}
     curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download || exit_with_error ${LINENO}
     dpkg -i butt*.deb || exit_with_error ${LINENO}
+    rm butt*.deb
 }
 
 install_youtubedl () {

@@ -143,6 +143,7 @@ private_ipv4 () {
 }
 
 print_icecast_data () {
+    printf "\n"
     printf "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\n"
     printf "Sinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $(private_ipv4)\n"
     printf "Sinu icecast serveri port on: $icecast_port\n"
@@ -150,6 +151,7 @@ print_icecast_data () {
     printf "Sinu icecast relee seadistamise parool on: $icecast_relay_password\n"
     printf "Sinu icecast haldamise parool on: $icecast_admin_password \n"
     printf "Sinu icecast haldamise kasutajanimi on: $icecast_admin_user \n"
+    printf "\n"
 }
 
 configure_butt () {
@@ -207,6 +209,7 @@ update_icecast_default_values
 configure_butt
 configure_liquidsoap
 configure_youtubedl
+print_icecast_data
 icecast_password_save_option
 
 chown -R $linux_username:$linux_username $homedir/.

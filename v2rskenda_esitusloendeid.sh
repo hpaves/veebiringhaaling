@@ -11,8 +11,8 @@ then
     exit 1
 fi
 
-playlist_repository="/home/$USER/helid/esitusloendid.txt"
 sounds_directory="/home/$USER/helid"
+playlist_repository="$sounds_directory/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]
 then
@@ -26,7 +26,7 @@ printf "\n"
 for dir in $(find $sounds_directory -maxdepth 1 -mindepth 1 -type d | cut -f5 -d '/')
 do
     # kausta sisu tingimuslik kontroll: https://stackoverflow.com/a/17902737
-    if [[ -r $dir && -w $dir && $(ls -A $dir) ]]
+    if [[ $(ls -A $($sounds_directory/$dir)) ]]
     then
         find $sounds_directory/$dir -iname "*.ogg" > $sounds_directory/$dir.m3u
         printf "$dir.m3u on nüüd loodud või ajakohane.\n"

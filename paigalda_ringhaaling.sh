@@ -1,8 +1,9 @@
 #!/bin/bash
 # Autor: Henri Paves
 # Versioon: 0.1
-# Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
+# Otstarve: Paigaldab automaatselt ringhäälingu komponendid, küsides kasutajalt võimalikult vähe. Seadistamisel sõltub teistest skriptidest.
 # Juhend: sudo bash paigalda_ringhaaling.sh <linux_kasutajanimi>
+# Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.
 
 # juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]
@@ -16,7 +17,8 @@ if [ $# -eq 1 ]
 then
     linux_username=$1
 else
-    echo "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>"
+    printf "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>\n"
+    printf "Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n"
     exit 1
 fi
 

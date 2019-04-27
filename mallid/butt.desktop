@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=0.1.17
+Name=Butt
+Name[de]=Butt
+GenericName=Butt
+GenericName[de]=Butt
+Comment=Broadcast Using This Tool
+Comment[de]=Broadcast Using This Tool
+Exec=butt
+Terminal=false
+Icon=butt-icon
+Type=Application
+StartupNotify=true
+Categories=Qt;AudioVideo;Audio;Midi;Mixer;Player;Recorder;Sequencer;
+

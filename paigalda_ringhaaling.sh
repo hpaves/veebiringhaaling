@@ -2,12 +2,21 @@
 # Autor: Henri Paves
 # Versioon: 0.1
 # Otstarve: Võimaldab kasutajal valida millised vabavaralise veebringhäälingu komponendid paigaldada
-# Juhend: sudo bash paigalda_ringhaaling.sh
+# Juhend: sudo bash paigalda_ringhaaling.sh <linux_kasutajanimi>
 
 # juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
 if [ $UID -ne 0 ]
 then
     printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
+    exit 1
+fi
+
+# argumentide arvu kontroll
+if [ $# -eq 1 ]
+then
+    linux_username=$1
+else
+    echo "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>"
     exit 1
 fi
 
@@ -24,7 +33,7 @@ exit_with_error () {
     fi
 }
 
-printf "Värskendan kogu süsteemi...\n"
+printf "Kontrollin kas süsteem on ajakohane...\n"
 apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error ${LINENO}
 printf "Süsteem on ajakohane.\n"
 
@@ -86,78 +95,12 @@ install_youtubedl () {
     fi
 }
 
-# Toggleable flags to indicate choices - Dennis Williamson
-# 2013-05-10 - https://serverfault.com/a/506704
-choice () {
-    local choice=$1
-    if [[ ${opts[choice]} ]] # toggle
-    then
-        opts[choice]=
-    else
-        opts[choice]=+
-    fi
-}
-
-software=("icecast2" "butt" "liquidsoap" "youtube-dl" "mixxx")
-
-PS3='Vali soovitud tarkvara: '
-while :
-do
-    clear
-    printf 'Icecast2 tuleb paigaldamisel kohe seadistada. Loe juhendit!\n'
-    printf 'Valiku tegemiseks sisesta vastava programmi number ja vajuta sisestusklahvi.\n'
-    printf 'Valiku tühistamiseks vali juba valitud programm uuesti.\n'
-    printf 'Väljumiseks vajuta CTRL+C\n\n'
-    options=("${software[0]} ${opts[1]}" \
-              "${software[1]} ${opts[2]}" \
-              "${software[2]} ${opts[3]}" \
-              "${software[3]} ${opts[4]}" \
-              "${software[4]} ${opts[5]}" \
-              "Valmis")
-    select opt in "${options[@]}"
-    do
-        case $opt in
-            "${software[0]} ${opts[1]}")
-                choice 1
-                break
-                ;;
-            "${software[1]} ${opts[2]}")
-                choice 2
-                break
-                ;;
-            "${software[2]} ${opts[3]}")
-                choice 3
-                break
-                ;;
-            "${software[3]} ${opts[4]}")
-                choice 4
-                break
-                ;;
-            "${software[4]} ${opts[5]}")
-                choice 5
-                break
-                ;;
-            "Valmis")
-                break 2
-                ;;
-            *) printf '%s\n' 'Sellist valikut ei olnud';;
-        esac
-    done
-done
-
-for opt in "${!opts[@]}"
-do
-    if [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" =~ butt ]]
-    then
-        install_butt
-    elif [[ ${opts[opt]} ]] && [[ "${software[opt-1]}" =~ youtube-dl ]]
-    then
-        install_youtubedl
-    elif [[ ${opts[opt]} ]]
-    then
-      apt_install ${software[opt-1]}
-    fi
-done
-
+apt_install icecast2 liquidsoap
+install_butt
+install_youtubedl
 apt-get clean && apt-get autoremove -y
-printf "\nKõik valitud tarkvara on paigaldatud.\n"
+
+./seadista_ringhaaling.sh $linux_username || exit_with_error ${LINENO}
+nano /home/$linux_username/helid/esitusloendid.txt || exit_with_error ${LINENO}
+./home/$linux_username/helid/v2rskenda_esindusloendeid.sh || exit_with_error ${LINENO}
+reboot

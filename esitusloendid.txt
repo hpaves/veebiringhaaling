@@ -1,2 +1,7 @@
-# Siia faili tuleb panna youtube esitusloendid, mida soovitakse muusika kausta tõmmata.
+# Siia faili tuleb panna youtube esitusloendid
+# Failis olevatest esitusloenditest tõmmatakse lood alla ja mängitakse automaatselt eetris.
+# See fail asub helide kaustas ja seda saab igal ajal täiendada.
 # Igale reale tuleb panna eraldi loend. Võib panna ka üksikuid lugusid.
+# Kui näed seda faili esimest korda, kleebi siia faili vähemalt üks YouTube esitusloend.
+# Olles loendi kleepinud, vajuta väljumiseks esiteks CTRL+o siis ENTER ja seejärel CTRL+x
+

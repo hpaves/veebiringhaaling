@@ -59,14 +59,12 @@ usermod -a -G veebiringhaaling icecast2
 usermod -a -G veebiringhaaling liquidsoap
 
 # sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
-user_confirm () {
-    read -p "Teostan toimingu? [J/e] " -n 1 -r
+icecast_password_save_option () {
+    read -p "Kas ma kirjutan need andmed $linux_username kodukaustas asuvasse faili? [J/e] " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Jj]$ ]]
     then
-        echo yes
-    else
-        echo no
+        print_icecast_data > $homedir/$linux_username/serveri_andmed.txt
     fi
 }
 
@@ -154,13 +152,6 @@ print_icecast_data () {
     printf "Sinu icecast haldamise kasutajanimi on: $icecast_admin_user \n"
 }
 
-verify_icecast_conf () {
-    read_icecast_data
-    printf "\nKontrolli üle, kas andmed klapivad!\n\n"
-    print_icecast_data
-    printf '\n'
-}
-
 configure_butt () {
     which butt > /dev/null 2>&1
 
@@ -213,10 +204,10 @@ configure_youtubedl () {
 
 read_icecast_data
 update_icecast_default_values
-verify_icecast_conf
 configure_butt
 configure_liquidsoap
 configure_youtubedl
+icecast_password_save_option
 
 chown -R $linux_username:$linux_username $homedir/.
 chown -R :veebiringhaaling $homedir/{helid,salvestused}

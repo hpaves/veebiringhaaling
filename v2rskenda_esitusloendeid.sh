@@ -11,7 +11,7 @@ then
     exit 1
 fi
 
-playlist_repository="/home/$USER/esitusloendid.txt"
+playlist_repository="/home/$USER/helid/esitusloendid.txt"
 sounds_directory="/home/$USER/helid"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]

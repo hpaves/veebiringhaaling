@@ -46,8 +46,8 @@ youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
 mkdir -p $radio_dir/{helid/{muusika,saated,teated},salvestused}
 touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u}
-mv esitusloendid.txt $radio_dir/helid/esitusloendid.txt
-mv v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
+mv $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
+mv $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
 groupadd veebiringhaaling
 usermod -a -G veebiringhaaling $linux_username
 usermod -a -G veebiringhaaling icecast2

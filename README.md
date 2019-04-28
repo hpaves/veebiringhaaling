@@ -14,5 +14,6 @@ Järgi ekraanile tekkivaid juhiseid.
 sudo puudumisel kasutad ilmselt Debiani. Selle asendamiseks:
 ```bash
 su
+cd
 apt update && apt install git -y
 ```

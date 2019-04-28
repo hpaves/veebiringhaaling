@@ -61,8 +61,7 @@ install_butt () {
     if [ $? -ne 0 ]
     then
         printf "butt pole paigaldatud. Paigaldame programmi butt...\n"
-        # uue ja vana korraga paigaldamine pole näpukas, vaid vajalik et programmi värskeim versioon tööle hakkaks
-        install_latest_butt && install_old_butt || exit_with_error
+        install_latest_butt || install_old_butt || exit_with_error
         printf "butt paigaldatud.\n"
     fi
 }
@@ -105,5 +104,5 @@ install_butt
 install_youtubedl
 apt-get clean && apt-get autoremove -y
 
-bash seadista_ringhaaling.sh "$linux_username" && nano /home/$linux_username/helid/esitusloendid.txt && sudo -u @linux_username bash home/$linux_username/helid/v2rskenda_esitusloendeid.sh || exit_with_error ${LINENO}
+bash seadista_ringhaaling.sh "$linux_username" && nano /home/$linux_username/helid/esitusloendid.txt && sudo -u $linux_username bash /home/$linux_username/helid/v2rskenda_esitusloendeid.sh || exit_with_error ${LINENO}
 reboot

@@ -3,15 +3,27 @@
 # Versioon: 0.1
 # Otstarve: Loob igast endaga samal tasemel olevast kaustast esitusloendeid
 # Juhend: bash v2rskenda_esitusloendeid.sh
+# Käivita see fail tavakasutajana.
 
-# juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
-if [ $UID -eq 0 ]
-then
-    printf "$(basename $0) tuleb käivitada tavakasutaja õigustes.\n"
-    exit 1
-fi
+# käivitatud skripti asukoha leidmine https://stackoverflow.com/a/630387
+find_installer_directory () {
+    MY_PATH="`dirname \"$BASH_SOURCE\"`"    # relative
+    MY_PATH="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
+    if [ -z "$MY_PATH" ]
+    then
+        exit_with_error ${LINENO}
+    fi
+    installer_directory="$MY_PATH"
+}
 
-sounds_directory="/home/$USER/helid"
+find_installer_directory
+
+source $installer_directory/funktsioonide_varamu.sh
+check_for_root_privileges_absence
+make_line_number_variable
+# exit_with_error ${LINENO}
+
+sounds_directory="$HOME/raadio/helid"
 playlist_repository="$sounds_directory/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]

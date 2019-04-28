@@ -102,7 +102,7 @@ update_icecast_default_values () {
 
     if new_sources=$(whiptail --inputbox --title "Still configuring icecast2" "\nSinu icecast teenusesse saab hetkel saata maksimaalselt $icecast_sources sisendvoogu.\n\nLiquidsoap vajab vaikimisi kahte ja butt ühte voogu.\n\nMõlemat tarkvara kasutades läheb seega kokku tarvis vähemalt kolme voogu.\n\nMäära endale sobiv maksimaalsete sisendvoogude arv.\n" 17 60 "3" 3>&1 1>&2 2>&3)
     then
-        update_icecast_parameter clients $new_sources
+        update_icecast_parameter sources $new_sources
     fi
 
 }

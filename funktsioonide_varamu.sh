@@ -23,17 +23,6 @@ check_for_root_privileges_absence () {
     fi
 }
 
-ensure_exactly_one_argument () {
-    if [ $# -eq 1 ]
-    then
-        linux_username=$1
-    else
-        printf "\nSkripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>\n"
-        printf "Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n\n"
-        exit 1
-    fi
-}
-
 # reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
 make_line_number_variable () {
     PS4=':$LINENO+'

@@ -17,9 +17,17 @@ find_installer_directory () {
 
 find_installer_directory
 
+if [ $# -eq 1 ]
+then
+    linux_username=$1
+else
+    printf "\nSkripti kasutus: bash $(basename $0) <linux_kasutajanimi>\n"
+    printf "Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n\n"
+    exit 1
+fi
+
 source $installer_directory/funktsioonide_varamu.sh
 check_for_root_privileges
-ensure_exactly_one_argument
 make_line_number_variable
 # exit_with_error ${LINENO}
 

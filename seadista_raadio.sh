@@ -44,20 +44,22 @@ butt_conf_file_location="$user_homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
-mkdir -p /{helid/{muusika,saated,teated},salvestused}
+mkdir_if_not_there_already $radio_dir
+mkdir_if_not_there_already $radio_dir/salvestused
+mkdir_if_not_there_already $radio_dir/helid
+mkdir_if_not_there_already $radio_dir/helid/muusika
+mkdir_if_not_there_already $radio_dir/helid/saated
+mkdir_if_not_there_already $radio_dir/helid/teated
 
-if [ ! -d $($($radio_dir/{helid/{muusika,saated,teated},salvestused})) ]
-then
-    mkdir -p $radio_dir/{helid/{muusika,saated,teated},salvestused} || exit_with_error ${LINENO}
-fi
-
-if [ ! -f $($($radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u})) ]
-then
-    touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u} || exit_with_error ${LINENO}
-fi
+touch_if_not_there_already $radio_dir/helid/muusika.m3u
+touch_if_not_there_already $radio_dir/helid/saated.m3u
+touch_if_not_there_already $radio_dir/helid/teated.m3u
 
 cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
 cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
+# skripti abil programmi menüüsse lisamine: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
+cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
+cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
 
 if [ ! $(cat /etc/group | grep veebiringhaaling}) ]
 then

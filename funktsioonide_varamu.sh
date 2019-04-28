@@ -59,6 +59,20 @@ cp_if_not_there_already () {
     fi
 }
 
+mkdir_if_not_there_already () {
+    if [ ! -d $1 ]
+    then
+        mkdir -p $1
+    fi
+}
+
+touch_if_not_there_already () {
+    if [ ! -f $1 ]
+    then
+        touch $1
+    fi
+}
+
 reboot_prompt () {
     read -p "Taaskäivitus on vajalik. Teeme kohe ära? [J/e] " -n 1 -r
         if [[ $REPLY =~ ^[Jj]$ ]]

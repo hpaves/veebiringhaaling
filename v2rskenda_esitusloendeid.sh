@@ -5,21 +5,10 @@
 # Juhend: bash v2rskenda_esitusloendeid.sh
 # Käivita see fail tavakasutajana.
 
-# käivitatud skripti asukoha leidmine https://stackoverflow.com/a/630387
-find_installer_directory () {
-    MY_PATH="`dirname \"$BASH_SOURCE\"`"    # relative
-    MY_PATH="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
-    if [ -z "$MY_PATH" ]
-    then
-        exit_with_error ${LINENO}
-    fi
-    installer_directory="$MY_PATH"
-}
-
 check_for_root_privileges_absence () {
     if [ $UID -eq 0 ]
     then
-        printf "$(basename $BASH_SOURCE) tuleb käivitada tavakasutaja õigustes.\n"
+        printf "$(basename $0) tuleb käivitada tavakasutaja õigustes.\n"
         exit 1
     fi
 }
@@ -29,12 +18,12 @@ make_line_number_variable () {
     PS4=':$LINENO+'
 }
 
-find_installer_directory
 check_for_root_privileges_absence
 make_line_number_variable
 # exit_with_error ${LINENO}
 
-public_dir="$HOME/raadio/avalik"
+public_dir_name="avalik"
+public_dir="$HOME/raadio/$public_dir_name"
 playlist_repository="$HOME/raadio/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]
@@ -46,7 +35,7 @@ fi
 
 printf "\n"
 
-for dir in $(find $public_dir -maxdepth 1 -mindepth 1 -type d | cut -f5 -d '/')
+for dir in $(find $public_dir -maxdepth 1 -mindepth 1 -type d | grep -Po "[^\/]*$" )
 do
     # kausta sisu tingimuslik kontroll: https://stackoverflow.com/a/17902737
     if [[ $(ls -A $public_dir/$dir) ]]

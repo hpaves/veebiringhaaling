@@ -62,7 +62,7 @@ cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_
 cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
 cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
 
-if [ ! $(cat /etc/group | grep veebiringhaaling}) ]
+if [ ! $(cat /etc/group | grep veebiringhaaling) ]
 then
     groupadd veebiringhaaling || exit_with_error ${LINENO}
     usermod -a -G veebiringhaaling $linux_username || exit_with_error ${LINENO}

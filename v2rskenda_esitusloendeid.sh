@@ -16,9 +16,20 @@ find_installer_directory () {
     installer_directory="$MY_PATH"
 }
 
-find_installer_directory
+check_for_root_privileges_absence () {
+    if [ $UID -eq 0 ]
+    then
+        printf "$(basename $BASH_SOURCE) tuleb käivitada tavakasutaja õigustes.\n"
+        exit 1
+    fi
+}
 
-source $installer_directory/funktsioonide_varamu.sh
+# reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
+make_line_number_variable () {
+    PS4=':$LINENO+'
+}
+
+find_installer_directory
 check_for_root_privileges_absence
 make_line_number_variable
 # exit_with_error ${LINENO}

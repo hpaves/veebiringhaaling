@@ -73,13 +73,9 @@ touch_if_not_there_already () {
     fi
 }
 
-# sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 reboot_prompt () {
-    read -p "Taaskäivitus on vajalik. Teeme kohe ära? [J/e] " -n 1 -r
-        if [[ $REPLY =~ ^[Jj]$ ]]
-        then
-            reboot
-        else
-            printf "\n"
-        fi
+    if whiptail --yesno --title "Lõpusirge paistab" "Taaskäivitus on vajalik. Teeme kohe ära?\n" 8 60 3>&1 1>&2 2>&3
+    then
+        reboot
+    fi
 }

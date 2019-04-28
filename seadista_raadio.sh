@@ -68,9 +68,7 @@ then
 fi
 
 icecast_password_save_option () {
-    read -p "Kas ma kirjutan need andmed $linux_username kodukaustas asuvasse faili? [J/e] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Jj]$ ]]
+    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\nSinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $(private_ipv4)\nSinu icecast serveri port on: $icecast_port\nSinu icecast meediavoo ühendamise parool on: $icecast_source_password\nSinu icecast relee seadistamise parool on: $icecast_relay_password\nSinu icecast haldamise parool on: $icecast_admin_password \nSinu icecast haldamise kasutajanimi on: $icecast_admin_user \n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 18 60 3>&1 1>&2 2>&3
     then
         print_icecast_data > $user_homedir/serveri_andmed.txt
     fi
@@ -90,32 +88,23 @@ update_icecast_parameter () {
 }
 
 update_icecast_default_values () {
-    if [[ $icecast_location =~ Earth ]]
-    then
-        printf "\nSinu icecast teenuse asukohaks on märgitud Earth.\n"
-        read -p "See on küll puhtkosmeetiline, kuid sisesta täpsem asukoht: " -r
-        update_icecast_parameter location $REPLY
-    fi
-    if [[ $icecast_admin =~ icemaster@localhost ]]
-    then
-        printf "\nSinu icecast teenuse kontaktiks on märgitud icemaster@localhost.\n"
-        read -p "Palun sisesta päris e-posti aadress: " -r
-        update_icecast_parameter admin $REPLY
-    fi
     if [[ $icecast_admin_user =~ admin ]]
     then
-        printf "\nSinu icecast teenuse haldamise kasutajanimi on admin.\nNime samaks jätmine võib kaasa tuua turvariski.\n"
-        read -p "Palun sisesta uus (ilma täpitähtedeta) kasutajanimi: " -r
-        update_icecast_parameter admin-user $REPLY
+        # sterr stdouti suunamise trikk https://stackoverflow.com/a/1970254
+        new_admin_user=$(whiptail --inputbox --nocancel --title "Still configuring icecast2" "\nSinu icecast teenuse haldamise kasutajanimi on admin.\nNime samaks jätmine võib kaasa tuua turvariski.\n\nPalun sisesta uus (ilma täpitähtedeta) kasutajanimi." 12 60 3>&1 1>&2 2>&3)
+        update_icecast_parameter admin-user $new_admin_user
     fi
 
-    printf "\nSinu icecast teenust saab hetkel maksimaalselt kuulata %s kuulajat.\n" $icecast_clients
-    read -p "Määra endale sobiv maksimaalsete kuulajate arv: " -r
-    update_icecast_parameter clients $REPLY
+    if new_clients=$(whiptail --inputbox --title "Still configuring icecast2" "\nSinu icecast teenust saab vaikimisi kuulata $icecast_clients kuulajat.\n\nMäära endale sobiv maksimaalsete kuulajate arv." 12 60 "$icecast_clients" 3>&1 1>&2 2>&3)
+    then
+        update_icecast_parameter clients $new_clients
+    fi
 
-    printf "\nSinu icecast teenusesse saab hetkel saata maksimaalselt %s sisendvoogu.\nLiquidsoap vajab vaikimisi kahte, butt ühte ja mixxx samuti ühte voogu.\nKõiki kolme tarkvara kasutades läheb seega kokku tarvis vähemalt nelja voogu.\n" $icecast_sources
-    read -p "Määra endale sobiv maksimaalsete sisendvoogude arv: " -r
-    update_icecast_parameter sources $REPLY
+    if new_sources=$(whiptail --inputbox --title "Still configuring icecast2" "\nSinu icecast teenusesse saab hetkel saata maksimaalselt $icecast_sources sisendvoogu.\n\nLiquidsoap vajab vaikimisi kahte ja butt ühte voogu.\n\nMõlemat tarkvara kasutades läheb seega kokku tarvis vähemalt kolme voogu.\n\nMäära endale sobiv maksimaalsete sisendvoogude arv.\n" 17 60 "3" 3>&1 1>&2 2>&3)
+    then
+        update_icecast_parameter clients $new_sources
+    fi
+
 }
 
 read_icecast_data () {
@@ -141,7 +130,6 @@ read_icecast_data () {
 }
 
 print_icecast_data () {
-    printf "\n"
     printf "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\n"
     printf "Sinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $(private_ipv4)\n"
     printf "Sinu icecast serveri port on: $icecast_port\n"
@@ -149,7 +137,6 @@ print_icecast_data () {
     printf "Sinu icecast relee seadistamise parool on: $icecast_relay_password\n"
     printf "Sinu icecast haldamise parool on: $icecast_admin_password \n"
     printf "Sinu icecast haldamise kasutajanimi on: $icecast_admin_user \n"
-    printf "\n"
 }
 
 configure_butt () {
@@ -205,6 +192,13 @@ configure_youtubedl () {
     fi
 }
 
+ask_for_youtube_url () {
+    if youtube_url=$(whiptail --inputbox --title "Configuring youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevatest esitusloenditest tõmmatakse kord tunnis lood alla ja mängitakse automaatselt eetris.\n\nSeda saab igal ajal täiendada, aga palun lisa siia esimene Youtube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
+    then
+        printf "$youtube_url\n" >> $radio_dir/esitusloendid.txt 
+    fi
+}
+
 read_icecast_data
 update_icecast_default_values
 configure_butt
@@ -212,6 +206,7 @@ configure_liquidsoap
 configure_youtubedl
 print_icecast_data
 icecast_password_save_option
+ask_for_youtube_url
 
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
 chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINENO}
@@ -222,6 +217,6 @@ bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 3 * * 6 youtube-dl
 bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 4 * * 6 apt update && apt full-upgrade -y"
 bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
 
-nano $radio_dir/esitusloendid.txt && sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
+sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
 
 printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu.\nNii ongi hea.\n"

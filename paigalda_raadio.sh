@@ -104,6 +104,6 @@ install_butt
 install_youtubedl
 apt-get clean && apt-get autoremove -y
 
-bash $installer_directory/seadista_raadio.sh "$linux_username" && nano /home/$linux_username/raadio/helid/esitusloendid.txt && sudo -u $linux_username bash /home/$linux_username/raadio/helid/v2rskenda_esitusloendeid.sh || exit_with_error ${LINENO}
+bash $installer_directory/seadista_raadio.sh "$linux_username" && nano /home/$linux_username/raadio/avalik/esitusloendid.txt && sudo -u $linux_username bash /home/$linux_username/raadio/avalik/v2rskenda_esitusloendeid.sh || exit_with_error ${LINENO}
 
 reboot_prompt

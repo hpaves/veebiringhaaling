@@ -34,8 +34,8 @@ check_for_root_privileges_absence
 make_line_number_variable
 # exit_with_error ${LINENO}
 
-sounds_directory="$HOME/raadio/helid"
-playlist_repository="$sounds_directory/esitusloendid.txt"
+public_dir="$HOME/raadio/avalik"
+playlist_repository="$HOME/raadio/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]
 then
@@ -46,12 +46,12 @@ fi
 
 printf "\n"
 
-for dir in $(find $sounds_directory -maxdepth 1 -mindepth 1 -type d | cut -f5 -d '/')
+for dir in $(find $public_dir -maxdepth 1 -mindepth 1 -type d | cut -f5 -d '/')
 do
     # kausta sisu tingimuslik kontroll: https://stackoverflow.com/a/17902737
-    if [[ $(ls -A $sounds_directory/$dir) ]]
+    if [[ $(ls -A $public_dir/$dir) ]]
     then
-        find $sounds_directory/$dir -iname "*.ogg" > $sounds_directory/$dir.m3u
+        find $public_dir/$dir -iname "*.ogg" > $public_dir/$dir.m3u
         printf "$dir.m3u on nüüd loodud või ajakohane.\n"
     fi
 done

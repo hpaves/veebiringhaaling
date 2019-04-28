@@ -33,6 +33,7 @@ make_line_number_variable
 
 user_homedir=/home/$linux_username
 radio_dir=$user_homedir/raadio
+public_dir_name=avalik
 
 icecast_default_file_copy="$installer_directory/mallid/icecast.xml"
 butt_template_file_location="$installer_directory/mallid/.buttrc"
@@ -46,18 +47,18 @@ youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
 mkdir_if_not_there_already $radio_dir
 mkdir_if_not_there_already $radio_dir/salvestused
-mkdir_if_not_there_already $radio_dir/helid
-mkdir_if_not_there_already $radio_dir/helid/muusika
-mkdir_if_not_there_already $radio_dir/helid/saated
-mkdir_if_not_there_already $radio_dir/helid/teated
+mkdir_if_not_there_already $radio_dir/$public_dir_name
+mkdir_if_not_there_already $radio_dir/$public_dir_name/muusika
+mkdir_if_not_there_already $radio_dir/$public_dir_name/saated
+mkdir_if_not_there_already $radio_dir/$public_dir_name/teated
 
-touch_if_not_there_already $radio_dir/helid/muusika.m3u
-touch_if_not_there_already $radio_dir/helid/saated.m3u
-touch_if_not_there_already $radio_dir/helid/teated.m3u
+touch_if_not_there_already $radio_dir/$public_dir_name/muusika.m3u
+touch_if_not_there_already $radio_dir/$public_dir_name/saated.m3u
+touch_if_not_there_already $radio_dir/$public_dir_name/teated.m3u
 
-cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
-cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
-# skripti abil programmi menüüsse lisamine: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
+cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/esitusloendid.txt
+cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/v2rskenda_esitusloendeid.sh
+# programmimenüü ikoonide asukohad: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
 cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
 cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
 
@@ -69,7 +70,6 @@ then
     usermod -a -G veebiringhaaling liquidsoap || exit_with_error ${LINENO}
 fi
 
-# sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 icecast_password_save_option () {
     read -p "Kas ma kirjutan need andmed $linux_username kodukaustas asuvasse faili? [J/e] " -n 1 -r
     echo
@@ -181,9 +181,9 @@ configure_liquidsoap () {
         then
             liquidsoap_logfile_name=$(print_filename_without_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'default = single.*'%'default = single("'$radio_dir'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/helid/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/helid/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'default = single.*'%'default = single("'$radio_dir'/'$public_dir_name'/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/'$public_dir_name'/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/'$public_dir_name'/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         fi
@@ -199,8 +199,8 @@ configure_youtubedl () {
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
-            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
-            sed -i s:'-o .*':'-o "'$radio_dir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/'$public_dir_name'/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s:'-o .*':'-o "'$radio_dir'/'$public_dir_name'/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
@@ -214,6 +214,6 @@ print_icecast_data
 icecast_password_save_option
 
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
-chown -R :veebiringhaaling $radio_dir || exit_with_error ${LINENO}
-chmod -R 750 $radio_dir/helid || exit_with_error ${LINENO}
-chmod -R 754 $radio_dir/salvestused || exit_with_error ${LINENO}
+chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINENO}
+chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
+chmod -R 750 $radio_dir/salvestused || exit_with_error ${LINENO}

@@ -5,6 +5,9 @@
 # Juhend: bash paigalda_raadio.sh <linux_kasutajanimi>
 # Argument linux_kasutajanimi all on mõeldud tavakasutajat, kelle kontoga toimub failide haldamine.
 
+# Butt paigalduse versioon sõltub käsitsi määratud URList. Vajadusel tuleb URL uuendada:
+latest_butt_url="https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download"
+
 # käivitatud skripti asukoha leidmine https://stackoverflow.com/a/630387
 find_installer_directory () {
     MY_PATH="`dirname \"$BASH_SOURCE\"`"    # relative
@@ -21,7 +24,6 @@ find_installer_directory
 if [ $# -eq 1 ]
 then
     linux_username=$1
-    echo $1
 else
     printf "\nSkripti kasutus: bash $(basename $0) <linux_kasutajanimi>\n"
     printf "Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n\n"
@@ -67,21 +69,21 @@ install_butt () {
 install_latest_butt () {
     # butt install fix https://stackoverflow.com/questions/27955600/broadcast-using-this-tool-butt-install-issues
     apt-get install -y alsa-oss alsa-utils build-essential gcc libasound2 libdbus-1-dev libflac-dev libfltk1.3-dev libmp3lame-dev libogg-dev libopus-dev libsamplerate0-dev libsamplerate-dev libvorbis-dev portaudio19-dev  || exit_with_error ${LINENO}
-    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.17/butt-0.1.17.tar.gz/download -o $installer_directory|| exit_with_error ${LINENO}
+    curl -LJ $latest_butt_url -o $installer_directory/butt_installer.tar.gz || exit_with_error ${LINENO}
     mkdir $installer_directory/butt_installer || exit_with_error ${LINENO}
-    tar -xzf $installer_directory/butt-*.tar.gz -C $installer_directory/butt_installer --strip-components 1 || exit_with_error ${LINENO}
+    tar -xzf $installer_directory/butt_installer.tar.gz -C $installer_directory/butt_installer --strip-components 1 || exit_with_error ${LINENO}
     cd $installer_directory/butt_installer || exit_with_error ${LINENO}
     ./configure --disable-aac || exit_with_error ${LINENO}
     make || exit_with_error ${LINENO}
     make install || exit_with_error ${LINENO}
-    rm -rf $installer_directory/{butt-*.tar.gz,butt_installer}
+    rm -rf $installer_directory/{butt_installer.tar.gz,butt_installer}
 }
 
 install_old_butt () {
     apt-get install -y libfltk1.3-dev portaudio19-dev libopus-dev libmp3lame-dev libvorbis-dev libogg-dev libflac-dev libdbus-1-dev libsamplerate0-dev || exit_with_error ${LINENO}
-    curl -LOJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download -o $installer_directory || exit_with_error ${LINENO}
-    dpkg -i $installer_directory/butt*.deb || exit_with_error ${LINENO}
-    rm $installer_directory/butt*.deb
+    curl -LJ https://sourceforge.net/projects/butt/files/butt/butt-0.1.13/butt_0.1.13-1-0ubuntu1~trusty_amd64.deb/download -o $installer_directory/butt_installer.deb || exit_with_error ${LINENO}
+    dpkg -i $installer_directory/butt_installer.deb || exit_with_error ${LINENO}
+    rm $installer_directory/butt_installer.deb
 }
 
 install_youtubedl () {

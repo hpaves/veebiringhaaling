@@ -73,6 +73,7 @@ touch_if_not_there_already () {
     fi
 }
 
+# sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 reboot_prompt () {
     read -p "Taaskäivitus on vajalik. Teeme kohe ära? [J/e] " -n 1 -r
         if [[ $REPLY =~ ^[Jj]$ ]]

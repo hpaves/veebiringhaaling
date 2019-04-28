@@ -28,8 +28,8 @@ ensure_exactly_one_argument () {
     then
         linux_username=$1
     else
-        printf "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>\n"
-        printf "Mõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n"
+        printf "\nSkripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>\n"
+        printf "\nMõeldud on tavakasutajat, kelle konto all toimub failide haldamine.\n"
         exit 1
     fi
 }

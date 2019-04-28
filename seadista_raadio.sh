@@ -219,3 +219,5 @@ chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 750 $radio_dir/salvestused || exit_with_error ${LINENO}
 
 nano $radio_dir/esitusloendid.txt && sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
+
+printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu.\nNii ongi hea.\n"

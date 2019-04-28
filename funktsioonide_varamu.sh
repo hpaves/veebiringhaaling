@@ -79,5 +79,7 @@ reboot_prompt () {
         if [[ $REPLY =~ ^[Jj]$ ]]
         then
             reboot
+        else
+            printf "\n"
         fi
 }

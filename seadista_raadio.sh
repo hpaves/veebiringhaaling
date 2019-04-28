@@ -58,9 +58,6 @@ touch_if_not_there_already $radio_dir/$public_dir_name/teated.m3u
 
 cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/esitusloendid.txt
 cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/v2rskenda_esitusloendeid.sh
-# programmimenüü ikoonide asukohad: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
-cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
-cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
 
 if [ ! $(cat /etc/group | grep veebiringhaaling) ]
 then
@@ -167,6 +164,9 @@ configure_butt () {
             sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'folder = .*'%'folder = '$radio_dir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
+            # programmimenüü ikoonide asukohad: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
+            cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
+            cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
         fi
     fi
 }

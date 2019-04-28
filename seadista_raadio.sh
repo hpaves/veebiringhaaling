@@ -2,57 +2,44 @@
 # Autor: Henri Paves 
 # Versioon: 0.1
 # Otstarve: Loeb Icecast2 seadistused ja kasutab neid muude vabavaralise veebringhäälingu komponentide seadistamiseks
-# Juhend: sudo bash seadista_ringhaaling.sh <linux_kasutajanimi>
+# Juhend: sudo bash seadista_raadio.sh <linux_kasutajanimi>
 
-# Juurkasutaja õiguste kontroll https://wiki.itcollege.ee/index.php/Bash_n%C3%A4ide
-if [ $UID -ne 0 ]
-then
-    printf "$(basename $0) tuleb käivitada juurkasutaja õigustes.\n"
-    exit 1
-fi
-
-# argumentide arvu kontroll
-if [ $# -eq 1 ]
-then
-    linux_username=$1
-else
-    echo "Skripti kasutus: sudo bash $(basename $0) <linux_kasutajanimi>"
-    exit 1
-fi
-
-# reanumbri muutuja tekitamine https://stackoverflow.com/a/29081598
-PS4=':$LINENO+'
-
-exit_with_error () {
-    # reanumbri väljastamiseks kasuta: || exit_with_error ${LINENO}
-    if [[ $1 ]]
+# käivitatud skripti asukoha leidmine https://stackoverflow.com/a/630387
+find_installer_directory () {
+    MY_PATH="`dirname \"$BASH_SOURCE\"`"    # relative
+    MY_PATH="`( cd \"$MY_PATH\" && pwd )`"  # absolutized and normalized
+    if [ -z "$MY_PATH" ]
     then
-        printf "Skriptis tekkis viga real $1 ja see peatati.\n" && exit 1
-    else
-        printf "Skriptis tekkis viga ja see peatati.\n" && exit 1
+        exit_with_error ${LINENO}
     fi
+    installer_directory="$MY_PATH"
 }
 
-error_issues_with_program () {
-    printf "\n%s pole paigaldatud või selle seadistusfail pole kirjutatav/loetav.\n" "$1"
-}
+find_installer_directory
 
-homedir=/home/$linux_username
+source $installer_directory/funktsioonide_varamu.sh
+check_for_root_privileges
+ensure_exactly_one_argument
+make_line_number_variable
+# exit_with_error ${LINENO}
 
-icecast_default_file_copy="$homedir/veebiringhaaling/mallid/icecast.xml"
-butt_template_file_location="$homedir/veebiringhaaling/mallid/.buttrc"
-liquidsoap_template_file_location="$homedir/veebiringhaaling/mallid/raadio.liq"
-youtubedl_template_file_location="$homedir/veebiringhaaling/mallid/config"
+user_homedir=/home/$linux_username
+radio_dir=$user_homedir/raadio
+
+icecast_default_file_copy="$installer_directory/mallid/icecast.xml"
+butt_template_file_location="$installer_directory/mallid/.buttrc"
+liquidsoap_template_file_location="$installer_directory/mallid/raadio.liq"
+youtubedl_template_file_location="$installer_directory/mallid/config"
 
 icecast_conf_file_location="/etc/icecast2/icecast.xml"
-butt_conf_file_location="$homedir/.buttrc"
+butt_conf_file_location="$user_homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
-youtubedl_conf_file_location="$homedir/.config/youtube-dl/config"
+youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
-mkdir -p $homedir/{helid/{muusika,saated,teated},salvestused}
-touch $homedir/helid/{muusika.m3u,saated.m3u,teated.m3u}
-mv esitusloendid.txt $homedir/helid/esitusloendid.txt
-mv v2rskenda_esitusloendeid.sh $homedir/helid/v2rskenda_esitusloendeid.sh
+mkdir -p $radio_dir/{helid/{muusika,saated,teated},salvestused}
+touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u}
+mv esitusloendid.txt $radio_dir/helid/esitusloendid.txt
+mv v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
 groupadd veebiringhaaling
 usermod -a -G veebiringhaaling $linux_username
 usermod -a -G veebiringhaaling icecast2
@@ -64,7 +51,7 @@ icecast_password_save_option () {
     echo
     if [[ $REPLY =~ ^[Jj]$ ]]
     then
-        print_icecast_data > $homedir/serveri_andmed.txt
+        print_icecast_data > $user_homedir/serveri_andmed.txt
     fi
 }
 
@@ -132,16 +119,6 @@ read_icecast_data () {
     fi
 }
 
-print_filename_without_path_and_extension () {
-    # töödeldav fail ei tohi olla peidetud
-    printf $1 | grep -Po "(?<=\/)\w*(?=\..*)"
-}
-
-# privaatse ipv4 aadressi filtreerimine https://unix.stackexchange.com/a/119272
-private_ipv4 () {
-    ip a | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'
-}
-
 print_icecast_data () {
     printf "\n"
     printf "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\n"
@@ -165,7 +142,7 @@ configure_butt () {
             sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'folder = .*'%'folder = '$homedir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'folder = .*'%'folder = '$radio_dir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
@@ -180,9 +157,9 @@ configure_liquidsoap () {
         then
             liquidsoap_logfile_name=$(print_filename_without_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'default = single.*'%'default = single("/home/'$linux_username'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'music   = playlist.*'%'music   = playlist("/home/'$linux_username'/helid/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("/home/'$linux_username'/helid/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'default = single.*'%'default = single("'$radio_dir'/helid/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/helid/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/helid/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         fi
@@ -194,12 +171,12 @@ configure_youtubedl () {
 
     if [[ $? -eq 0 ]]
     then
-        mkdir -p $homedir/.config/youtube-dl/
+        mkdir -p $user_homedir/.config/youtube-dl/
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
-            sed -i s%'--download-archive .*'%'--download-archive "'$homedir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
-            sed -i s:'-o .*':'-o "'$homedir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/helid/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s:'-o .*':'-o "'$radio_dir'/helid/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
@@ -212,7 +189,7 @@ configure_youtubedl
 print_icecast_data
 icecast_password_save_option
 
-chown -R $linux_username:$linux_username $homedir/.
-chown -R :veebiringhaaling $homedir/{helid,salvestused}
-chmod -R 750 $homedir/helid
-chmod -R 754 $homedir/salvestused
+chown -R $linux_username:$linux_username $user_homedir/.
+chown -R :veebiringhaaling $radio_dir
+chmod -R 750 $radio_dir/helid
+chmod -R 754 $radio_dir/salvestused

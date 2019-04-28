@@ -52,3 +52,9 @@ private_ipv4 () {
     ip a | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'
 }
 
+move_if_not_there_already () {
+    if [ ! -f $2 ]
+    then
+        cp $1 $2
+    fi
+}

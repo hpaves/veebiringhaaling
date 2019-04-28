@@ -44,14 +44,28 @@ butt_conf_file_location="$user_homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
-mkdir -p $radio_dir/{helid/{muusika,saated,teated},salvestused}
-touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u}
-mv $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
-mv $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
-groupadd veebiringhaaling
-usermod -a -G veebiringhaaling $linux_username
-usermod -a -G veebiringhaaling icecast2
-usermod -a -G veebiringhaaling liquidsoap
+mkdir -p /{helid/{muusika,saated,teated},salvestused}
+
+if [ ! -d $($($radio_dir/{helid/{muusika,saated,teated},salvestused})) ]
+then
+    mkdir -p $radio_dir/{helid/{muusika,saated,teated},salvestused} || exit_with_error ${LINENO}
+fi
+
+if [ ! -f $($($radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u})) ]
+then
+    touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u} || exit_with_error ${LINENO}
+fi
+
+mv_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt || exit_with_error ${LINENO}
+mv_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh  || exit_with_error ${LINENO}
+
+if [ ! $(cat /etc/group | grep veebiringhaaling}) ]
+then
+    groupadd veebiringhaaling || exit_with_error ${LINENO}
+    usermod -a -G veebiringhaaling $linux_username || exit_with_error ${LINENO}
+    usermod -a -G veebiringhaaling icecast2 || exit_with_error ${LINENO}
+    usermod -a -G veebiringhaaling liquidsoap || exit_with_error ${LINENO}
+fi
 
 # sisendi vastu võtmine ühe klahvivajutusega https://stackoverflow.com/a/1885534
 icecast_password_save_option () {
@@ -197,7 +211,7 @@ configure_youtubedl
 print_icecast_data
 icecast_password_save_option
 
-chown -R $linux_username:$linux_username $user_homedir/.
-chown -R :veebiringhaaling $radio_dir
-chmod -R 750 $radio_dir/helid
-chmod -R 754 $radio_dir/salvestused
+chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
+chown -R :veebiringhaaling $radio_dir || exit_with_error ${LINENO}
+chmod -R 750 $radio_dir/helid || exit_with_error ${LINENO}
+chmod -R 754 $radio_dir/salvestused || exit_with_error ${LINENO}

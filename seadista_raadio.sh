@@ -56,8 +56,8 @@ then
     touch $radio_dir/helid/{muusika.m3u,saated.m3u,teated.m3u} || exit_with_error ${LINENO}
 fi
 
-mv_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
-mv_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
+cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/helid/esitusloendid.txt
+cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/helid/v2rskenda_esitusloendeid.sh
 
 if [ ! $(cat /etc/group | grep veebiringhaaling}) ]
 then

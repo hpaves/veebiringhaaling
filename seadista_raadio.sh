@@ -219,4 +219,7 @@ bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * *
 
 sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
 
+# see rida hoiab kohta kuni saan päris vaikimisi.ogg lindistada
+youtube-dl --ignore-config -x --audio-format vorbis -o '$radio_dir/$public_dir_name/vaikimisi.ogg' https://www.youtube.com/watch?v=9FHw2aItRlw
+
 printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu.\nNii ongi hea.\n"

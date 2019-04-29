@@ -68,7 +68,7 @@ then
 fi
 
 icecast_password_save_option () {
-    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri aadress samast arvutist ühendamiseks on: $icecast_hostname\nSinu icecast serveri aadress kohalikust võrgust ühendamiseks on: $(private_ipv4)\nSinu icecast serveri port on: $icecast_port\nSinu icecast meediavoo ühendamise parool on: $icecast_source_password\nSinu icecast relee seadistamise parool on: $icecast_relay_password\nSinu icecast haldamise parool on: $icecast_admin_password \nSinu icecast haldamise kasutajanimi on: $icecast_admin_user \n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 22 60 3>&1 1>&2 2>&3
+    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&
     then
         print_icecast_data > $user_homedir/serveri_andmed.txt
     fi
@@ -138,7 +138,7 @@ print_icecast_data () {
     printf "Relee seadistamise parool: $icecast_relay_password\n"
     printf "Veebiliidese parool: $icecast_admin_password \n"
     printf "Veebiliidese kasutajanimi: $icecast_admin_user \n\n"
-    printf "Kohaliku võrgus kuula aadressil: $(private_ipv4):$icecast_port\n"
+    printf "Kohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n"
 }
 
 configure_butt () {

@@ -10,8 +10,6 @@ cd veebiringhaaling
 bash paigalda_raadio.sh pi
 ```
 
-Järgi ekraanile tekkivaid juhiseid.
-
 Debiani juhend, kui tavakasutaja nimi on dj:
 ```bash
 su
@@ -21,3 +19,14 @@ git clone https://github.com/hpaves/veebiringhaaling.git
 cd veebiringhaaling
 bash paigalda_raadio.sh dj
 ```
+Järgi ekraanile tekkivaid juhiseid.
+
+Icecast2 on vaja seadistada.
+![Icecast2 on vaja seadistada](pildid/icecast_config_1.png)
+
+Vaikimisi pakutud `localhost` nimi sobib.
+![Vaikimisi pakutud `localhost` nimi sobib.](pildid/icecast_config_2.png)
+
+Vaikimisi pakutud paroolid tuleb kindlasti muuta!
+![Vaikimisi pakutud paroolid tuleb kindlasti muuta!](pildid/icecast_config_3.png)
+

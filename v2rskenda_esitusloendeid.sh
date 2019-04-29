@@ -28,7 +28,8 @@ playlist_repository="$HOME/raadio/esitusloendid.txt"
 
 if [[ -r $playlist_repository && -w $playlist_repository ]]
 then
-    youtube-dl -a $playlist_repository
+    # miks cron ei tea tavalisi käske https://unix.stackexchange.com/a/65456
+    /usr/local/bin/youtube-dl -a $playlist_repository
 else
     printf "Skript katkes kuna ei saa esitusloendite faili lugeda/kirjutada.\n" && exit 1
 fi

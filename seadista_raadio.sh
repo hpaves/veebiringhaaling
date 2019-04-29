@@ -216,7 +216,6 @@ chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 750 $radio_dir/salvestused || exit_with_error ${LINENO}
 
 bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 3 * * 6 youtube-dl -U"
-bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 4 * * 6 apt update && apt full-upgrade -y"
 bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
 
 sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh

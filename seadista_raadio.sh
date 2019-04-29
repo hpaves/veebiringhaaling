@@ -68,7 +68,7 @@ then
 fi
 
 icecast_password_save_option () {
-    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&
+    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&3
     then
         print_icecast_data > $user_homedir/serveri_andmed.txt
     fi
@@ -100,7 +100,7 @@ update_icecast_default_values () {
         update_icecast_parameter clients $new_clients
     fi
 
-    if new_sources=$(whiptail --inputbox --title "Set icecast2 max sources" "\nSinu icecast teenusesse saab hetkel saata maksimaalselt $icecast_sources sisendvoogu.\n\nLiquidsoap vajab vaikimisi kahte ja butt ühte voogu.\n\nMõlemat tarkvara kasutades läheb seega kokku tarvis vähemalt kolme voogu.\n\nMäära endale sobiv maksimaalsete sisendvoogude arv.\n" 17 60 "3" 3>&1 1>&2 2>&3)
+    if new_sources=$(whiptail --inputbox --title "Set icecast2 max sources" "\nSinu icecast teenusesse saab hetkel saata maksimaalselt $icecast_sources sisendvoogu.\n\nLiquidsoap vajab vaikimisi kahte ja butt ühte voogu, ning vaikimisi paigaldatakse need mõlemad.\n\nSeega läheb edukaks automaatpaigalduseks tarvis vähemalt kolme voogu.\n\nMäära endale sobiv maksimaalsete sisendvoogude arv.\n" 18 60 "3" 3>&1 1>&2 2>&3)
     then
         update_icecast_parameter sources $new_sources
     fi
@@ -195,7 +195,7 @@ configure_youtubedl () {
 }
 
 ask_for_youtube_url () {
-    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevaid esitusloendeid kontrollitakse igal täistunnil ajakohasuses osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
+    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevaid esitusloendeid kontrollitakse igal täistunnil ajakohasuse osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia oma esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
     then
         printf "$youtube_url\n" >> $radio_dir/esitusloendid.txt 
     fi
@@ -222,6 +222,6 @@ bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * *
 sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
 
 # see rida hoiab kohta kuni saan päris vaikimisi.ogg lindistada
-youtube-dl --ignore-config -x --audio-format vorbis -o "'$radio_dir'/'$public_dir_name'/vaikimisi.%(ext)s" https://www.youtube.com/watch?v=9FHw2aItRlw
+youtube-dl --ignore-config -x --audio-format vorbis -o "'$radio_dir/$public_dir_name'/vaikimisi.%(ext)s" https://www.youtube.com/watch?v=9FHw2aItRlw
 
 printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu.\nNii ongi hea.\n"

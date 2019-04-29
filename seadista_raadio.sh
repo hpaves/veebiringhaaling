@@ -58,6 +58,7 @@ touch_if_not_there_already $radio_dir/$public_dir_name/teated.m3u
 
 cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/esitusloendid.txt
 cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/v2rskenda_esitusloendeid.sh
+cp_if_not_there_already $installer_directory/helid/vaikimisi.ogg $radio_dir/$public_dir_name/vaikimisi.ogg
 
 if [ ! $(cat /etc/group | grep veebiringhaaling) ]
 then
@@ -219,8 +220,5 @@ bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 3 * * 6 youtube-dl
 bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
 
 sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
-
-# see rida hoiab kohta kuni saan päris vaikimisi.ogg lindistada
-youtube-dl --ignore-config -x --audio-format vorbis -o "'$radio_dir/$public_dir_name'/vaikimisi.%(ext)s" https://www.youtube.com/watch?v=9FHw2aItRlw
 
 printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu.\nNii ongi hea.\n"

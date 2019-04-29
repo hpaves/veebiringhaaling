@@ -19,14 +19,18 @@ git clone https://github.com/hpaves/veebiringhaaling.git
 cd veebiringhaaling
 bash paigalda_raadio.sh dj
 ```
-Järgi ekraanile tekkivaid juhiseid.
+## Detailsemad juhised
 
 Icecast2 on vaja seadistada.
-![Icecast2 on vaja seadistada](pildid/icecast_config_1.png)
 
-Vaikimisi pakutud `localhost` nimi sobib.
+![Icecast2 on vaja seadistada.](pildid/icecast_config_1.png)
+
+Vaikimisi pakutud nimi `localhost` sobib.
+
 ![Vaikimisi pakutud `localhost` nimi sobib.](pildid/icecast_config_2.png)
 
 Vaikimisi pakutud paroolid tuleb kindlasti muuta!
+
 ![Vaikimisi pakutud paroolid tuleb kindlasti muuta!](pildid/icecast_config_3.png)
 
+Järgi ekraanile tekkivaid edasisi juhiseid.

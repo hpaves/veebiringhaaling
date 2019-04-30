@@ -205,25 +205,25 @@ ask_for_youtube_url () {
 website_index_location="/var/www/html/index.*"
 
 update_html_element () {
-    sed -i s/'<'$1'>.*<\/'$2'>'/'<'$1'>'$3'<\/'$2'>'/ $website_index_location || exit_with_error ${LINENO}
+    sed -i s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $website_index_location || exit_with_error ${LINENO}
 }
 
 configure_website () {
     mkdir /var/www/html/saated
-    ln $installer_directory/avalik/vaikimisi.ogg /var/www/html/vaikimisi.ogg
+    ln $installer_directory/helid/vaikimisi.ogg /var/www/html/vaikimisi.ogg
     chmod 644 /var/www/html/*
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then
-        update_html_element 'h1 class="display-3 text-white text-handwriting text-uppercase"' h1 $radio_owner
+        sed -i s/'<h1 class="display-3 text-white text-handwriting text-uppercase">.*<\/h1>'/'<h1 class="display-3 text-white text-handwriting text-uppercase">'$radio_owner'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
 
     if radio_type=$(whiptail --inputbox --title "What kind of radio is this?" "\nNüüd määra kodulehe pealkirja jaoks raadio tüüp.\n\nNäiteks: veebiraadio, kooliraadio, jne.\n\nVõib ka lihtsalt raadio.\n" 17 60 "raadio" 3>&1 1>&2 2>&3)
     then
-        update_html_element 'h1 class="display-1 text-success text-uppercase title-margin-fix"' h1 $radio_type
+        sed -i s/'<h1 class="display-1 text-success text-uppercase title-margin-fix">.*<\/h1>'/'<h1 class="display-1 text-success text-uppercase title-margin-fix">'$radio_type'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
 
-    update_html_element title title "$radio_owner $radio_type"
+    update_html_element title "$radio_owner $radio_type"
 
 }
 

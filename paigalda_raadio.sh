@@ -104,9 +104,9 @@ install_regular_website () {
 
     if [ $? -ne 0 ]
     then
-        printf "apache2 not installed. Installing Apache...\n"
+        printf "apache2 pole paigaldatud. Paigaldame programmi apache2...\n"
         apt-get install apache2 -y || exit_with_error ${LINENO}
-        printf "apache2 installed.\n"
+        printf "apache2 paigaldatud.\n"
     fi
 
     cp $installer_directory/daydream/* /var/www/html/

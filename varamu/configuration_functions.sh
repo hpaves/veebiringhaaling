@@ -146,11 +146,11 @@ update_index_html_element () {
 configure_website () {
     mkdir $website_base_folder/saated
     ln $radio_dir/$public_dir_name/vaikimisi.ogg $website_base_folder/vaikimisi.ogg
-    chmod -R 644 /var/www/html/*
-    chmod 755 /var/www/html/css
-    chmod -R 644 /var/www/html/css/*
-    chmod 755 /var/www/html/saated
-    chmod -R 644 /var/www/html/saated/*
+    chmod -R 644 $website_base_folder/*
+    chmod 755 $website_base_folder/css
+    chmod -R 644 $website_base_folder/css/*
+    chmod 755 $website_base_folder/saated
+    chmod -R 644 $website_base_folder/saated/*
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then
@@ -161,7 +161,7 @@ configure_website () {
     then
         sed -i s/'<h1 class="display-1 text-success text-uppercase title-margin-fix">.*<\/h1>'/'<h1 class="display-1 text-success text-uppercase title-margin-fix">'$radio_type'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
-    radio_title="$radio_owner' '$radio_type"
+    radio_title="$radio_owner$space$radio_type"
 
     update_index_html_element title $radio_title
 

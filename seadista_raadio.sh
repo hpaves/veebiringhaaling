@@ -30,6 +30,7 @@ repository_name=varamu
 
 source $installer_directory/$repository_name/global_variables.sh
 source $installer_directory/$repository_name/general_functions.sh
+source $installer_directory/$repository_name/configuration_functions.sh
 check_for_root_privileges
 make_line_number_variable
 # exit_with_error ${LINENO}

@@ -144,12 +144,15 @@ update_index_html_element () {
 }
 
 configure_website () {
-    mkdir $website_base_folder/saated
-    ln $radio_dir/$public_dir_name/vaikimisi.ogg $website_base_folder/vaikimisi.ogg
-    chmod -R 644 $website_base_folder/*
-    chmod 755 $website_base_folder/css
-    chmod -R 644 $website_base_folder/css/*
-    chmod 755 $website_base_folder/saated
+    mkdir $website_base_folder/saated || exit_with_error ${LINENO}
+    ln $radio_dir/$public_dir_name/vaikimisi.ogg $website_base_folder/vaikimisi.ogg || exit_with_error ${LINENO}
+    chmod -R 644 $website_base_folder/* || exit_with_error ${LINENO}
+    chmod 755 $website_base_folder/css || exit_with_error ${LINENO}
+    chmod -R 644 $website_base_folder/css/* || exit_with_error ${LINENO}
+    chmod 755 $website_base_folder/saated || exit_with_error ${LINENO}
+    cp /etc/fstab /etc/fstab.backup || exit_with_error ${LINENO}
+    prinf "mount $radio_dir/$public_dir_name/saated $website_base_folder/saated auto nosuid,nodev,nofail,x-gvfs-show 0 0\n" >> /etc/fstab || exit_with_error ${LINENO}
+    mount -a || exit_with_error ${LINENO}
     chmod -R 644 $website_base_folder/saated/*
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)

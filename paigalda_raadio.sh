@@ -98,10 +98,23 @@ install_youtubedl () {
     fi
 }
 
+install_regular_website () {
+    apt_install apache2
+    cp $installer_directory/daydream/* /var/www/html/
+}
+
+install_protected_website () {
+    install_regular_website
+    apt_install php
+    apt_install libapache2-mod-php7.0
+    # funktsioon on poolik
+}
+
 apt_install icecast2
 apt_install liquidsoap
 install_butt
 install_youtubedl
+install_regular_website
 apt-get clean && apt-get autoremove -y
 
 bash $installer_directory/seadista_raadio.sh "$linux_username" || exit_with_error ${LINENO}

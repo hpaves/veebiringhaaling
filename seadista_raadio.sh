@@ -202,6 +202,31 @@ ask_for_youtube_url () {
     fi
 }
 
+website_index_location="/var/www/html/index.*"
+
+update_html_element () {
+    sed -i s/'<'$1'>.*<\/'$2'>'/'<'$1'>'$3'<\/'$2'>'/ $website_index_location || exit_with_error ${LINENO}
+}
+
+configure_website () {
+    mkdir /var/www/html/saated
+    ln $installer_directory/avalik/vaikimisi.ogg /var/www/html/vaikimisi.ogg
+    chmod 644 /var/www/html/*
+
+    if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
+    then
+        update_html_element 'h1 class="display-3 text-white text-handwriting text-uppercase"' h1 $radio_owner
+    fi
+
+    if radio_type=$(whiptail --inputbox --title "What kind of radio is this?" "\nNüüd määra kodulehe pealkirja jaoks raadio tüüp.\n\nNäiteks: veebiraadio, kooliraadio, jne.\n\nVõib ka lihtsalt raadio.\n" 17 60 "raadio" 3>&1 1>&2 2>&3)
+    then
+        update_html_element 'h1 class="display-1 text-success text-uppercase title-margin-fix"' h1 $radio_type
+    fi
+
+    update_html_element title title "$radio_owner $radio_type"
+
+}
+
 read_icecast_data
 update_icecast_default_values
 configure_butt
@@ -210,6 +235,7 @@ configure_youtubedl
 print_icecast_data
 icecast_password_save_option
 ask_for_youtube_url
+configure_website
 
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
 chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINENO}

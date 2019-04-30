@@ -71,12 +71,8 @@ install_regular_website () {
         printf "apache2 paigaldatud.\n"
     fi
 
-    cp -R $installer_directory/daydream/* /var/www/html/
-}
-
-install_protected_website () {
-    install_regular_website
     apt_install php
     apt_install libapache2-mod-php7.0
-    # funktsioon on poolik
+
+    cp -R $installer_directory/daydream/* /var/www/html/
 }

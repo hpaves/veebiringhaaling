@@ -37,6 +37,10 @@
       <div class="panel-group" id="accordion">
         <div class="panel panel-default">
           <!--old_shows-->
+<?php
+// reading files from a directory https://stackoverflow.com/a/4560953
+foreach(glob('saated/*') as $file) echo $file,"\n";
+?>
             <div class="panel-heading">
               <h4 class="panel-title">
                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Vaikimisi fail</a>

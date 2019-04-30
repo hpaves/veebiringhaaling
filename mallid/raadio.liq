@@ -13,10 +13,10 @@ set("server.telnet", true)
 # A bunch of files and playlists,
 # supposedly all located in the same base dir.
 
-default = single("/home/dj/helid/vaikimisi.ogg")
+default = single("/home/dj/raadio/avalik/vaikimisi.ogg")
 
-music   = playlist("/home/dj/helid/muusika.m3u",reload_mode="watch")
-jingles = playlist("/home/dj/helid/teated.m3u",reload_mode="watch")
+music   = playlist("/home/dj/raadio/avalik/muusika.m3u",reload_mode="watch")
+jingles = playlist("/home/dj/raadio/avalik/teated.m3u",reload_mode="watch")
 
 # Play user requests if there are any,
 # otherwise one of our playlists,

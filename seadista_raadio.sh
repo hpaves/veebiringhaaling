@@ -69,7 +69,7 @@ then
 fi
 
 icecast_password_save_option () {
-    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&3
+    if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\n\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohaliku võrgus kuulamise aadress: $(private_ipv4):$icecast_port\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&3
     then
         print_icecast_data > $user_homedir/serveri_andmed.txt
     fi
@@ -156,7 +156,7 @@ configure_butt () {
             sed -i s%'folder = .*'%'folder = '$radio_dir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
             # programmimenüü ikoonide asukohad: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
             cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
-            cp_if_not_there_already $installer_directory/mallid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
+            cp_if_not_there_already $installer_directory/pildid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
         fi
     fi
 }
@@ -189,7 +189,7 @@ configure_youtubedl () {
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
-            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/'$public_dir_name'/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
             sed -i s:'-o .*':'-o "'$radio_dir'/'$public_dir_name'/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
         fi
     fi

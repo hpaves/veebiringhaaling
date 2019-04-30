@@ -35,7 +35,7 @@ start_rec = 1
 sync_to_hour  = 0
 split_time = 0
 filename = salvestus_%Y-%m-%d_%H-%M-%S.ogg
-folder = /home/dj/salvestused/
+folder = /home/dj/raadio/salvestused/
 
 [dsp]
 equalizer = 0

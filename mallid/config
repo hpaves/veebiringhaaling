@@ -12,7 +12,7 @@
 --audio-format vorbis
 
 # jätab meelde millised failid on juba tõmmatud
---download-archive "/home/dj/helid/youtube_allalaadimiste_arhiiv.txt"
+--download-archive "/home/dj/raadio/youtube_allalaadimiste_arhiiv.txt"
 
 # tõmmatavate failide vaikimisi kaust ja failinime vorming
--o "/home/dj/helid/muusika/%(title)s %(id)s.%(ext)s"
+-o "/home/dj/raadio/muusika/%(title)s %(id)s.%(ext)s"

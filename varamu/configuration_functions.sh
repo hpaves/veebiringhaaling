@@ -139,6 +139,12 @@ ask_for_youtube_url () {
     fi
 }
 
+configure_ufw () {
+    ufw enable
+    ufw allow 80
+    ufw allow 8000
+}
+
 update_index_html_element () {
     sed -i s/'<'$1'>.*<\/'$1'>'/'<'$1'>'$2'<\/'$1'>'/ $website_index_location || exit_with_error ${LINENO}
 }
@@ -169,3 +175,4 @@ configure_website () {
 
 
 }
+

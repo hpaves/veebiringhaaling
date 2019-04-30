@@ -63,6 +63,7 @@ update_icecast_default_values
 configure_butt
 configure_liquidsoap
 configure_youtubedl
+configure_ufw
 print_icecast_data
 icecast_password_save_option
 ask_for_youtube_url

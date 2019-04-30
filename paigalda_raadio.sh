@@ -47,6 +47,7 @@ printf "Süsteem on ajakohane.\n"
 apt_install curl
 apt_install ffmpeg
 apt_install sudo
+apt_install ufw
 apt_install icecast2
 apt_install liquidsoap
 install_butt

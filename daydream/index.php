@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Meie oma raadio</title>
+    <title>Meie raadio</title>
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     
@@ -20,7 +20,7 @@
 <div class="jumbotron bg-primary text-center text-white mb-0 radius-0">
   <div class="container">
 
-    <h1 class="display-3 text-white text-handwriting text-uppercase">Meie oma</h1>
+    <h1 class="display-3 text-white text-handwriting text-uppercase">Meie</h1>
     <h1 class="display-1 text-success text-uppercase title-margin-fix">raadio</h1>
 
     <div>
@@ -35,22 +35,24 @@
     <div class="container">
       <!-- https://www.w3schools.com/bootstrap/bootstrap_collapse.asp -->
       <div class="panel-group" id="accordion">
-        <div class="panel panel-default">
           <!--old_shows-->
 <?php
 // reading files from a directory https://stackoverflow.com/a/4560953
-foreach(glob('saated/*') as $file) echo $file,"\n";
+$x = 0;
+foreach(glob('saated/*.mp3') as $file) { $x++; echo 
+'        <div class="panel panel-default">',"\n"
+.'          <div class="panel-heading">',"\n"
+.'          <h4 class="panel-title">',"\n"
+.'              <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$x.'">'. $file .'</a>',"\n"
+.'               </h4>',"\n"
+.'                </div>',"\n"
+.'                 <div id="collapse'.$x.'" class="panel-collapse collapse in">',"\n"
+.'             <audio id="player" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12/' .$file. '" type="audio/mpeg" /></audio>',"\n"
+.'            </div>',"\n"
+.'        </div>'
+;}
 ?>
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Vaikimisi fail</a>
-              </h4>
-            </div>
-            <div id="collapse1" class="panel-collapse collapse in">
-              <audio id="player" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12/vaikimisi.mp3" type="audio/mpeg" /></audio>
-            </div>
           <!--/old_shows-->
-        </div>
       </div> 
     </div>
   </div>

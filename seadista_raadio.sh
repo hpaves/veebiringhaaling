@@ -131,7 +131,7 @@ read_icecast_data () {
 }
 
 print_icecast_data () {
-    printf "Sinu icecast serveri andmed:\n"
+    printf "Sinu icecast serveri andmed:\n\n"
     printf "Aadress samast arvutist ühendamiseks: $icecast_hostname\n"
     printf "Aadress kohalikust võrgust ühendamiseks: $(private_ipv4)\n"
     printf "Serveri port: $icecast_port\n"
@@ -172,8 +172,8 @@ configure_liquidsoap () {
             liquidsoap_logfile_name=$(print_filename_without_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'default = single.*'%'default = single("'$radio_dir'/'$public_dir_name'/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/'$public_dir_name'/muusika.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/'$public_dir_name'/teated.m3u")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/'$public_dir_name'/muusika.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/'$public_dir_name'/teated.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         fi
@@ -196,7 +196,7 @@ configure_youtubedl () {
 }
 
 ask_for_youtube_url () {
-    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevaid esitusloendeid kontrollitakse igal täistunnil ajakohasuse osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia oma esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
+    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevaid esitusloendeid kontrollitakse ajakohasuse osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia oma esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
     then
         printf "$youtube_url\n" >> $radio_dir/esitusloendid.txt 
     fi
@@ -216,8 +216,8 @@ chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINE
 chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 750 $radio_dir/salvestused || exit_with_error ${LINENO}
 
-bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 3 * * 6 youtube-dl -U"
-bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "0 * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
+bash $installer_directory/add_cronjob_user_x_job_y.sh root "0 3 * * 6 /usr/local/bin/youtube-dl -U"
+bash $installer_directory/add_cronjob_user_x_job_y.sh $linux_username "* * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
 
 sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
 

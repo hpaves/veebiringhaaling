@@ -74,7 +74,7 @@ touch_if_not_there_already () {
 }
 
 reboot_prompt () {
-    if whiptail --yesno --title "Lõpusirge paistab" "Taaskäivitus on vajalik. Teeme kohe ära?\n" 8 60 3>&1 1>&2 2>&3
+    if whiptail --yesno --title "Confirm reboot" "Taaskäivitus on vajalik. Teeme kohe ära?\n" 8 60 3>&1 1>&2 2>&3
     then
         reboot
     fi

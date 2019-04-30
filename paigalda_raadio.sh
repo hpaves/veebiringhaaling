@@ -109,7 +109,7 @@ install_regular_website () {
         printf "apache2 paigaldatud.\n"
     fi
 
-    cp $installer_directory/daydream/* /var/www/html/
+    cp -R $installer_directory/daydream/* /var/www/html/
 }
 
 install_protected_website () {

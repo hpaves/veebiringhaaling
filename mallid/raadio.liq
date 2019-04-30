@@ -37,7 +37,12 @@ output.icecast(%vorbis,
   host="localhost",port=8000,password="hackme",
   mount="raadio.ogg",full)
 
-# Output the stream without live in OGG
-output.icecast(%vorbis, 
+# Output the full stream in MP3
+output.icecast(%mp3, 
   host="localhost",port=8000,password="hackme",
-  mount="raadio_otse-eetrita.ogg",radio)
+  mount="radio",full)
+
+## Output the stream without live in OGG
+#output.icecast(%vorbis, 
+#  host="localhost",port=8000,password="hackme",
+#  mount="raadio_otse-eetrita.ogg",radio)

@@ -144,9 +144,13 @@ update_index_html_element () {
 }
 
 configure_website () {
-    mkdir /var/www/html/saated
-    ln $installer_directory/helid/vaikimisi.ogg $website_base_folder/vaikimisi.ogg
-    chmod 644 /var/www/html/*
+    mkdir $website_base_folder/saated
+    ln $radio_dir/$public_dir_name/vaikimisi.ogg $website_base_folder/vaikimisi.ogg
+    chmod -R 644 /var/www/html/*
+    chmod 755 /var/www/html/css
+    chmod -R 644 /var/www/html/css/*
+    chmod 755 /var/www/html/saated
+    chmod -R 644 /var/www/html/saated/*
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then

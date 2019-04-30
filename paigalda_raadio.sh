@@ -99,7 +99,16 @@ install_youtubedl () {
 }
 
 install_regular_website () {
-    apt_install apache2
+    # apachet ei saa which käsuga leida
+    dpkg -l apache2 > /dev/null 2>&1
+
+    if [ $? -ne 0 ]
+    then
+        printf "apache2 not installed. Installing Apache...\n"
+        apt-get install apache2 -y || exit_with_error ${LINENO}
+        printf "apache2 installed.\n"
+    fi
+
     cp $installer_directory/daydream/* /var/www/html/
 }
 

@@ -161,8 +161,8 @@ configure_website () {
     then
         sed -i s/'<h1 class="display-1 text-success text-uppercase title-margin-fix">.*<\/h1>'/'<h1 class="display-1 text-success text-uppercase title-margin-fix">'$radio_type'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
-    radio_title=printf "$radio_owner$space$radio_type"
 
-    update_index_html_element title $radio_title
+    sed -i s/'<title>.*<\/title>'/'<title>'$radio_owner' '$radio_type'<\/title>'/ $website_index_location || exit_with_error ${LINENO}
+
 
 }

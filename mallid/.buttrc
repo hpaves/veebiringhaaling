@@ -30,11 +30,11 @@ buffer_ms = 50
 
 [record]
 bitrate = 192
-codec = ogg
+codec = mp3
 start_rec = 1
 sync_to_hour  = 0
 split_time = 0
-filename = salvestus_%Y-%m-%d_%H-%M-%S.ogg
+filename = salvestus_%Y-%m-%d_%H-%M-%S.mp3
 folder = /home/dj/raadio/salvestused/
 
 [dsp]
@@ -57,4 +57,3 @@ password = hackme
 type = 1
 mount = otse-eeter.ogg
 usr = source
-

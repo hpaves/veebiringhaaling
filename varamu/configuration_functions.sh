@@ -155,11 +155,17 @@ configure_website () {
     chmod -R 644 $website_base_folder/* || exit_with_error ${LINENO}
     chmod 755 $website_base_folder/css || exit_with_error ${LINENO}
     chmod -R 644 $website_base_folder/css/* || exit_with_error ${LINENO}
-    chmod 755 $website_base_folder/saated || exit_with_error ${LINENO}
-    cp /etc/fstab /etc/fstab.backup || exit_with_error ${LINENO}
-    prinf "mount $radio_dir/$public_dir_name/saated $website_base_folder/saated auto nosuid,nodev,nofail,x-gvfs-show 0 0\n" >> /etc/fstab || exit_with_error ${LINENO}
-    mount -a || exit_with_error ${LINENO}
-    chmod -R 644 $website_base_folder/saated/*
+
+    mkdir_if_not_there_already $website_base_folder/saated
+    ln -s $website_base_folder/saated $radio_dir/$public_dir_name/saated
+    chmod 775 $website_base_folder/saated || exit_with_error ${LINENO}
+    chmod -R 664 $website_base_folder/saated/*
+    chown -R www-data:www-data $website_base_folder
+
+    if [ ! $(groups $linux_username | grep www-data) ]
+    then
+        usermod -a -G www-data $linux_username || exit_with_error ${LINENO}
+    fi
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then

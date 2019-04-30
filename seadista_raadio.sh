@@ -39,11 +39,9 @@ mkdir_if_not_there_already $radio_dir
 mkdir_if_not_there_already $radio_dir/salvestused
 mkdir_if_not_there_already $radio_dir/$public_dir_name
 mkdir_if_not_there_already $radio_dir/$public_dir_name/muusika
-mkdir_if_not_there_already $radio_dir/$public_dir_name/saated
 mkdir_if_not_there_already $radio_dir/$public_dir_name/teated
 
 touch_if_not_there_already $radio_dir/$public_dir_name/muusika.m3u
-touch_if_not_there_already $radio_dir/$public_dir_name/saated.m3u
 touch_if_not_there_already $radio_dir/$public_dir_name/teated.m3u
 
 cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/esitusloendid.txt

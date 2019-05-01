@@ -85,7 +85,7 @@ install_restricted_website () {
     cp -r $installer_directory/daydream_restricted/* /var/www/html/
 }
 
-install_website_and_give_a_choice () {
+choose_between_regular_and_restricted_website_install () {
     if whiptail --yesno --title "Website password restrictions?" "Loodavale veebiraadiole luuakse veebiliides, mille kaudu kasutajad seda kuulavad.\n\nKas kasutajad peaks raadiole ligipääsuks sisestama parooli?\n\nParooli määramine on kasulik näiteks haridusasutusele, kes tahab oma raadio internetis kättesaadavaks teha, kuid samas kuulajate ringi piirata.\n\n" 16 60 3>&1 1>&2 2>&3
     then
         install_restricted_website

@@ -3,7 +3,7 @@ session_start();
 $hashedkey = '$2y$10$jZ8G8YA/b6sAIUMYDsBYNeV.O6p8Paz/6B1GZmK5Atm96mvm8ceOa';
 # Create a hash for a password with hashgenerator.php; in this case, I used "test1234"
 if (isset($_SESSION["verified"]) && $_SESSION["verified"]) {
-  header("Location: /index.php");
+  header("Location: index.php");
   # Check if a user has been previously verified first, in order to redirect them as quickly as possible.
 }
 
@@ -34,7 +34,6 @@ if (isset($_POST["key"])) {
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Meie raadio</title>
@@ -64,16 +63,14 @@ if (isset($_POST["key"])) {
     <p>Haridusasutusena võime õppeesmärgil kasutada autoriõigustega kaitstud materjali, kuid see pole avalikkusele kuulamiseks. </p>
     <p>Juriidilistel põhjustel tuleb kasutajal end tuvastada. </p>
      <div class="container py-5 text-center">
-	<form class="form-check-inline text-center" action="verification.php<?php if (isset($_GET["continue"])) echo "?continue=" . GET($_htmlentities["continue"]); ?>" method="post" autocomplete="off">
-	  <label class="sr-only" for="key">Key</label>
-	  <div class="input-group mb-2 mr-sm-2 mb-sm-0 text-center">
-	    <input class="form-control" name="key" id="key" placeholder="Salasõna" type="password">
-	  </div>
-	  <button type="submit" class="btn btn-primary">Sisene</button>
-	</form>
-
-
-         <p><?php if (isset($error)) echo "    <p>$error</p>\n"; ?></p>
+       <form class="form-check-inline text-center" action="verification.php<?php if (isset($_GET["continue"])) echo "?continue=" . htmlentities($_GET["continue"]); ?>" method="post" autocomplete="off">
+          <label class="sr-only" for="key">Key</label>
+           <div class="input-group mb-2 mr-sm-2 mb-sm-0 text-center">
+             <input class="form-control" type="password" name="key" id="key" placeholder="Salasõna">
+           </div>
+         <input class="btn btn-primary" type="submit" value="Sisene">
+       </form>
+        <?php if (isset($error)) echo "    <p>$error</p>\n"; ?>
        </div>
     </div>
   </div>

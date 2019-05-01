@@ -34,3 +34,11 @@ Vaikimisi pakutud paroolid tuleb kindlasti muuta!
 ![Vaikimisi pakutud paroolid tuleb kindlasti muuta!](pildid/icecast_config_3.png)
 
 Järgi ekraanile tekkivaid edasisi juhiseid.
+
+
+## Kasutatud materjalid
+### [HackerThemes theme-machine](https://github.com/HackerThemes/theme-machine)
+Kasutajate veebiliidese kujundus.
+
+### [henry7720 Verification-Page](https://github.com/henry7720/Verification-Page)
+Turvab vajadusel kasutajate veebiliidest parooliga.

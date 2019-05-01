@@ -53,7 +53,7 @@ apt_install icecast2
 apt_install liquidsoap
 install_butt
 install_youtubedl
-install_regular_website
+choose_between_regular_and_restricted_website_install
 apt-get clean && apt-get autoremove -y
 
 bash $installer_directory/seadista_raadio.sh "$linux_username" || exit_with_error ${LINENO}

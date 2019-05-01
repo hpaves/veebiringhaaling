@@ -60,7 +60,7 @@ install_youtubedl () {
     fi
 }
 
-install_regular_website () {
+install_website_base () {
     # apachet ei saa which käsuga leida
     dpkg -l apache2 > /dev/null 2>&1
 
@@ -73,6 +73,23 @@ install_regular_website () {
 
     apt_install php
     apt_install libapache2-mod-php7.0
+}
 
-    cp -R $installer_directory/daydream/* /var/www/html/
+install_regular_website () {
+    install_website_base
+    cp -r $installer_directory/daydream/* /var/www/html/
+}
+
+install_restricted_website () {
+    install_website_base
+    cp -r $installer_directory/daydream_restricted/* /var/www/html/
+}
+
+choose_between_regular_and_restricted_website_install () {
+    if whiptail --yesno --title "Website password restrictions?" "Loodavale veebiraadiole luuakse veebiliides, mille kaudu kasutajad seda kuulavad.\n\nKas kasutajad peaks raadiole ligipääsuks sisestama parooli?\n\nParooli määramine on kasulik näiteks haridusasutusele, kes tahab oma raadio internetis kättesaadavaks teha, kuid samas kuulajate ringi piirata.\n\n" 16 60 3>&1 1>&2 2>&3
+    then
+        install_restricted_website
+    else
+        install_regular_website
+    fi
 }

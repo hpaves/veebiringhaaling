@@ -160,7 +160,7 @@ configure_website () {
     chmod 775 $website_base_folder/saated || exit_with_error ${LINENO}
     chmod -R 664 $website_base_folder/saated/*
     chown -R www-data:www-data $website_base_folder
-    rm $website_base_folder/index.html
+    cp $installer_directory/mallid/dir.conf /etc/apache2/mods-enabled/dir.conf
 
     if [ ! $(groups $linux_username | grep www-data) ]
     then

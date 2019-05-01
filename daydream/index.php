@@ -29,14 +29,18 @@
   </div>
 </div>
 
-<!--old_show_section-->
-  <div class="container py-5 text-center">
-    <h1>Järelkuulatavad saated</h1>
-    <div class="container">
-      <!-- https://www.w3schools.com/bootstrap/bootstrap_collapse.asp -->
-      <div class="panel-group" id="accordion">
-          <!--old_shows-->
 <?php
+$files = glob('saated/*.mp3');
+if (count($files) > 0) {
+
+echo '<!--old_show_section-->',"\n"
+.'  <div class="container py-5 text-center">',"\n"
+.'    <h1>Järelkuulatavad saated</h1>',"\n"
+.'    <div class="container">',"\n"
+.'      <!-- https://www.w3schools.com/bootstrap/bootstrap_collapse.asp -->',"\n"
+.'      <div class="panel-group" id="accordion">',"\n"
+.'          <!--old_shows-->';
+
 // reading files from a directory https://stackoverflow.com/a/4560953
 $x = 0;
 foreach(glob('saated/*.mp3') as $file) { $x++; echo 
@@ -51,13 +55,13 @@ foreach(glob('saated/*.mp3') as $file) { $x++; echo
 .'            </div>',"\n"
 .'        </div>'
 ;}
+echo          '<!--/old_shows-->',"\n"
+.'      </div>',"\n"
+.'    </div>',"\n"
+.'  </div>',"\n"
+.'<!--/old_show_section-->';
+}
 ?>
-          <!--/old_shows-->
-      </div> 
-    </div>
-  </div>
-<!--/old_show_section-->
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 

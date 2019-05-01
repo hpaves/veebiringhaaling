@@ -24,7 +24,7 @@
     <h1 class="display-1 text-success text-uppercase title-margin-fix">raadio</h1>
 
     <div>
-      <audio id="player" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12:8000/raadio" type="audio/mpeg" /></audio>
+      <audio id="stream" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12:8000/raadio" type="audio/mpeg" /></audio>
     </div>
   </div>
 </div>
@@ -47,7 +47,7 @@ foreach(glob('saated/*.mp3') as $file) { $x++; echo
 .'               </h4>',"\n"
 .'                </div>',"\n"
 .'                 <div id="collapse'.$x.'" class="panel-collapse collapse in">',"\n"
-.'             <audio id="player" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12/' .$file. '" type="audio/mpeg" /></audio>',"\n"
+.'             <audio id="recordings" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12/' .$file. '" type="audio/mpeg" /></audio>',"\n"
 .'            </div>',"\n"
 .'        </div>'
 ;}

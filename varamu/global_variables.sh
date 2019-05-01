@@ -20,5 +20,6 @@ liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
 website_base_folder="/var/www/html"
-website_index_location="$website_base_folder/index.*"
-space=" "
+website_index_location="$website_base_folder/index.php"
+
+default_stream_name=raadio

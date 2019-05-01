@@ -160,6 +160,7 @@ configure_website () {
     chmod 775 $website_base_folder/saated || exit_with_error ${LINENO}
     chmod -R 664 $website_base_folder/saated/*
     chown -R www-data:www-data $website_base_folder
+    rm $website_base_folder/index.html
 
     if [ ! $(groups $linux_username | grep www-data) ]
     then
@@ -168,15 +169,18 @@ configure_website () {
 
     if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then
-        sed -i s/"<h1 class=\"display-3 text-white text-handwriting text-uppercase\">.*<\/h1>"/"<h1 class=\"display-3 text-white text-handwriting text-uppercase\">"${$radio_owner}"<\/h1>"/ $website_index_location || exit_with_error ${LINENO}
+        sed -i s/'<h1 class="display-3 text-white text-handwriting text-uppercase">.*<\/h1>'/'<h1 class="display-3 text-white text-handwriting text-uppercase">'$radio_owner'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
 
     if radio_type=$(whiptail --inputbox --title "What kind of radio is this?" "\nNüüd määra kodulehe pealkirja jaoks raadio tüüp.\n\nNäiteks: veebiraadio, kooliraadio, jne.\n\nVõib ka lihtsalt raadio.\n" 17 60 "raadio" 3>&1 1>&2 2>&3)
     then
-        sed -i s/"<h1 class=\"display-1 text-success text-uppercase title-margin-fix\">.*<\/h1>"/"<h1 class=\"display-1 text-success text-uppercase title-margin-fix\">"${$radio_type}"<\/h1>"/ $website_index_location || exit_with_error ${LINENO}
+        sed -i s/'<h1 class="display-1 text-success text-uppercase title-margin-fix">.*<\/h1>'/'<h1 class="display-1 text-success text-uppercase title-margin-fix">'$radio_type'<\/h1>'/ $website_index_location || exit_with_error ${LINENO}
     fi
 
-    sed -i s/"<title>.*<\/title>"/"<title>"${$radio_owner}" "${$radio_type}"<\/title>"/ $website_index_location || exit_with_error ${LINENO}
+    sed -i s%'<audio id="stream" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="'.*'" type="audio/mpeg" /></audio>'%'<audio id="stream" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="'$(private_ipv4):$icecast_port/$default_stream_name'" type="audio/mpeg" /></audio>'% $website_index_location || exit_with_error ${LINENO}
 
+    sed -i s%'<audio id="recordings" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://'.*'/'%'<audio id="recordings" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://'$(private_ipv4)'/'% $website_index_location || exit_with_error ${LINENO}
+
+    sed -i s/'<title>.*<\/title>'/'<title>'$radio_owner' '$radio_type'<\/title>'/ $website_index_location || exit_with_error ${LINENO}
 
 }

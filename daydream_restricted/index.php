@@ -1,3 +1,7 @@
+<?php
+session_start();
+if ($_SESSION["verified"]) {
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,10 +26,6 @@
 
     <h1 class="display-3 text-white text-handwriting text-uppercase">Meie</h1>
     <h1 class="display-1 text-success text-uppercase title-margin-fix">raadio</h1>
-<?php
-session_start();
-if ($_SESSION["verified"]) {
-?>
     <div>
       <audio id="stream" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12:8000/raadio" type="audio/mpeg" /></audio>
     </div>

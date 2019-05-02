@@ -1,5 +1,5 @@
-# veebiringhaaling
-Vabavaraline ringhääling veebis. Hetkel saab skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada vaid hädavajalik info. Muu protsess on automatiseeritud.
+# Vabavaraline ringhääling veebis
+Hetkel saab skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada vaid hädavajalik info. Muu protsess on automatiseeritud.
 
 ## Mis on protsessi tulemuseks?
 Olles teinud läbi paigalduse, on sul olemas kõik vajalik omanenda veebiraadio tegevusega alustamiseks.
@@ -56,7 +56,7 @@ Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, ku
 - Tõmba alla ![NOOBS](https://www.raspberrypi.org/downloads/noobs/)
 - jne
 
-# Tarkvara aigaldusjuhised
+# Tarkvara paigaldusjuhised
 Raspberry Pi puhul trüki terminali:
 ```bash
 sudo -i

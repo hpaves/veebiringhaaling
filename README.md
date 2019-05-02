@@ -1,15 +1,15 @@
 # veebiringhaaling
 Vabavaraline ringhääling veebis. Hetkel saab skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada vaid hädavajalik info. Muu protsess on automatiseeritud.
 
-## Mis on protsessi tulemuseks?
+### Mis on protsessi tulemuseks?
 Olles teinud läbi paigalduse, on sul olemas kõik vajalik omanenda veebiraadio tegevusega alustamiseks.
 
-## Mida mul vaja on?
+### Mida mul vaja on?
 Sisuliselt on selleks vaja serveri riistvara, USB helikaarti koos mikrofonidega ja juhtmega internetiühendust.
 
 Võimalik, et vaja läheb ka mõne arvutitega kodus oleva inimese abi. Seda eriti juhul, kui tahate raadiot kasutusele võtta kohas kus on keerulisem sisevõrk, või kui tahate raadio otse internetist (mitte vaid sisevõrgust) kuulatavaks teha.
 
-## Ettevalmistused
+### Ettevalmistused
 Esiteks tuleks välja mõelda mis saab olema teie raadio nimi. Seda küsitakse tarkvara paigaldamise käigus.
 
 Vaikimisi on raadio nimeks *"Meie oma raadio"*, ning välja saab sealt vahetada fraasi *Meie oma*. Sõna *raadio* vaikimisi välja vahetada ei saa. Erinimevajadustega kasutajatel on raadio nime pärast paigaldust lihtne HTML'is muuta.
@@ -21,10 +21,10 @@ Kohalikku arvutispetsialisti võiks pärast raadioteemalist vestlust kostitada j
 - *"Internetist kuulamiseks oleks vaja suunata suvaline väline port enne mainitud IP port 80 peale."*
 - *"Kas sa aitaksid mind selle kõigega?"*
 
-## Uppusin praegu tehnilistesse mõistetesse!
+### Uppusin praegu tehnilistesse mõistetesse!
 Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on mõeldud vanusele alates 8. eluaastast. Kui see on tööle saadud, läheb veebiringhäälingu püsti panekuks (sõltuvalt interneti kiiruses) umbes veerand tundi. Lisaks siis vajadusel kohaliku arvutispetsialisti lisaseadistused.
 
-## Soovitatav riistvara
+### Soovitatav riistvara
 - Raspberry Pi 3
 - Vähemalt 32GB class 10 microSD kaart
 - microSD kaardi lugeja
@@ -38,25 +38,25 @@ Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada
 ### Kas kindlasti just need seadmed?
 Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka mikserpult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annabki rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemiks Debiani.
 
-# Riistvara paigaldusjuhend
+## Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
 - Ühenda kuvar, klaviatuur, hiir
 - Pane microSD kaart lugejasse ning ühenda see arvutiga
 
-## Kui sul on luba tarkvara paigaldada
-- Paigalda programm ![Etcher](https://www.balena.io/etcher/)
-- Tõmba alla ![Raspbian with Desktop](https://www.raspberrypi.org/downloads/raspbian/)
+### Kui sul on luba tarkvara paigaldada
+- Paigalda programm [Etcher](https://www.balena.io/etcher/)
+- Tõmba alla [Raspbian with Desktop](https://www.raspberrypi.org/downloads/raspbian/)
 - Ava Etcher
   - Vali tõmmatud Raspbiani fail
   - Vali sisestatud SD kaart
   - Vajuta "Flash!"
 - Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
 
-## Kui sul pole luba tarkvara paigaldada
-- Tõmba alla ![NOOBS](https://www.raspberrypi.org/downloads/noobs/)
+### Kui sul pole luba tarkvara paigaldada
+- Tõmba alla [NOOBS](https://www.raspberrypi.org/downloads/noobs/)
 - jne
 
-# Tarkvara aigaldusjuhised
+## Tarkvara aigaldusjuhised
 Raspberry Pi puhul trüki terminali:
 ```bash
 sudo -i
@@ -74,7 +74,7 @@ git clone https://github.com/hpaves/veebiringhaaling.git
 cd veebiringhaaling
 bash paigalda_raadio.sh dj
 ```
-## Paigalduse käigus tehtavad valikud.
+### Paigalduse käigus tehtavad valikud.
 Paigaldusskript annab kasutajale mitmeid valikuid. Kõik tehtavad valikud on olulised, kuid siinkohal on toodud välja mõned, millele tuleks pöörata erilist tähelepanu.
 
 Icecast2 on vaja seadistada. Siin tuleb valida "jah", sest muidu läheb paigaldusega tõenäoliselt kauem kui lubatud veerand tundi.
@@ -100,7 +100,7 @@ gedit /var/www/html/index.php
 Raadio nimi on kahel eraldi real. Seda pole raske leida ja muuta.
 Ära üleliigset kustuta. Siis võib taas minna kauem kui veerand tundi.
 
-# Raadio võrgutamine
+## Raadio võrgutamine
 Olles arvuti taaskäivitanud, on see nüüd kohalikus võrgus (näiteks koolimaja wifis) kuulatav.
 
 

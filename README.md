@@ -22,7 +22,7 @@ Kohalikku arvutispetsialisti võiks pärast raadioteemalist vestlust kostitada j
 - *"Kas sa aitaksid mind selle kõigega?"*
 
 ## Uppusin praegu tehnilistesse mõistetesse!
-Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on mõeldud vanusele alates 8. eluaastast. Kui see on tööle saadud, läheb veebiringhäälingu püsti panekuks (sõltuvalt interneti kiiruses) umbes veerand tundi. Lisaks siis vajadusel kohaliku arvutispetsialisti lisaseadistused.
+Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on mõeldud vanusele alates 8. eluaastast. Kui see on tööle saadud, läheb veebiringhäälingu püsti panekuks (sõltuvalt interneti kiirusest) umbes veerand tundi. Lisaks siis vajadusel kohaliku arvutispetsialisti lisaseadistused.
 
 ## Soovitatav riistvara
 - Raspberry Pi 3
@@ -33,10 +33,12 @@ Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on
 - Mikrofon(id)
 - Helifailide taaesitamise seade (arvuti, nutifon)
 
-Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada microSD kaart ning laadida sellele Raspbian operatsioonisüsteem. Luba arvutisse tarkvara paigaldada teeb protsessi lihtsamaks, aga see pole ilmtingimata vajalik. Arvutiga MicroSD kaardi adapter
+Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada microSD kaart ning laadida sellele Raspbian operatsioonisüsteem. Luba arvutisse tarkvara paigaldada teeb protsessi lihtsamaks, aga see pole ilmtingimata vajalik.
+
+MicroSD kaardi mahu valikul peaks võtma arvesse kui palju on omaloodud saateid salvestada. 
 
 ## Kas kindlasti just need seadmed?
-Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka mikserpult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annabki rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemiks Debiani.
+Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka mikserpult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annab rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
 
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
@@ -44,16 +46,21 @@ Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, ku
 - Pane microSD kaart lugejasse ning ühenda see arvutiga
 
 ## Kui sul on luba tarkvara paigaldada
-- Paigalda programm [Etcher](https://www.balena.io/etcher/)
+- Paigalda programmid [Etcher](https://www.balena.io/etcher/) ja [QuickHash GUI](https://quickhash-gui.org/downloads/)
 - Tõmba alla [Raspbian with Desktop](https://www.raspberrypi.org/downloads/raspbian/)
-- Ava Etcher
+- Ava QuickHash GUI veendumaks, et tõmmatud Raspbian on terviklik 
+  - Vali alamenüü *File*
+  - Kleebi välja *Excpected Hash Value* Raspbiani allalaadimiste lehelt saadud SHA-256 räsi
+  - Vali *Select File* abil Raspbiani fail
+  - Kui saad teate, et räsid klappisid, oled veendunud tõmmatud faili tervikluses
+- Ava Etcher, et vormindada microSD kaart
   - Vali tõmmatud Raspbiani fail
   - Vali sisestatud SD kaart
-  - Vajuta "Flash!"
+  - Vajuta *Flash!*
 - Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
 
 ## Kui sul pole luba tarkvara paigaldada
-- Tõmba alla ![NOOBS](https://www.raspberrypi.org/downloads/noobs/)
+- Tõmba alla [NOOBS](https://www.raspberrypi.org/downloads/noobs/)
 - jne
 
 # Tarkvara paigaldusjuhised

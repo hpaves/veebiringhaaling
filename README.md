@@ -14,15 +14,15 @@ Esiteks tuleks välja mõelda mis saab olema teie raadio nimi. Seda küsitakse t
 
 Vaikimisi on raadio nimeks *"Meie oma raadio"*, ning välja saab sealt vahetada fraasi *Meie oma*. Sõna *raadio* vaikimisi välja vahetada ei saa. Erinimevajadustega kasutajatel on raadio nime pärast paigaldust lihtne HTML'is muuta.
 
+Lisaks tuleks otsustada, kas tahate kuulata raadiot üksnes kohalikus võrgus, või teha selle kättesaadavaks ka internetis. Viimasest võimalusest räägime allpool lähemalt.
+
 Kohalikku arvutispetsialisti võiks pärast raadioteemalist vestlust kostitada järgmiste küsimustega:
 - *"Kuidas saada raadioruumi juhtmega võrguühendus?"*
 - *"Vajalik on üles seada staatiline IP. Millises vahemikus ma seda teha võin?"*
 - *"Kas meie kohalikus võrgus on VLANid või muud piirangud? Seade peaks olema võimalikult paljudele kättesaadav."*
-- *"Internetist kuulamiseks oleks vaja suunata suvaline väline port enne mainitud IP port 80 peale."*
-- *"Kas sa aitaksid mind selle kõigega?"*
 
 ## Uppusin praegu tehnilistesse mõistetesse!
-Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on mõeldud vanusele alates 8. eluaastast. Kui see on tööle saadud, läheb veebiringhäälingu püsti panekuks (sõltuvalt interneti kiirusest) umbes veerand tundi. Lisaks siis vajadusel kohaliku arvutispetsialisti lisaseadistused.
+Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on mõeldud vanusele alates 8. eluaastast. Kui Pi on tööle saadud, läheb veebiringhäälingu töökorda seadmiseks (sõltuvalt interneti kiirusest) umbes veerand tundi. Lisaks siis vajadusel kohaliku arvutispetsialisti lisaseadistused staatilise IP ning avalikust veebist kättesaadavaks tegemise osas.
 
 ## Soovitatav riistvara
 - Raspberry Pi 3
@@ -38,7 +38,7 @@ Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada
 MicroSD kaardi mahu valikul peaks võtma arvesse kui palju on omaloodud saateid salvestada. 
 
 ## Kas kindlasti just need seadmed?
-Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka mikserpult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annab rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
+Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka helipult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annab rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
 
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
@@ -50,18 +50,20 @@ Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, ku
 - Tõmba alla [Raspbian with Desktop](https://www.raspberrypi.org/downloads/raspbian/)
 - Ava QuickHash GUI veendumaks, et tõmmatud Raspbian on terviklik 
   - Vali alamenüü *File*
+  - Vali algoritmiks *SHA-256*
   - Kleebi välja *Excpected Hash Value* Raspbiani allalaadimiste lehelt saadud SHA-256 räsi
-  - Vali *Select File* abil Raspbiani fail
-  - Kui saad teate, et räsid klappisid, oled veendunud tõmmatud faili tervikluses
+  - Vali *Select File* abil Raspbiani .zip fail
+  - Kui saad teate, et räsid klappisid, oled veendunud tõmmatud faili tervikluses ja võid selle lahti pakkida
 - Ava Etcher, et vormindada microSD kaart
-  - Vali tõmmatud Raspbiani fail
+  - Vali Raspbiani .img fail
   - Vali sisestatud SD kaart
   - Vajuta *Flash!*
 - Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
 
 ## Kui sul pole luba tarkvara paigaldada
 - Tõmba alla [NOOBS](https://www.raspberrypi.org/downloads/noobs/)
-- jne
+- QuickHash GUI käivitub ka ilma paigaldamata, seega on tervikluse kontroll sama mis eelmises punktis
+- 
 
 # Tarkvara paigaldusjuhised
 Raspberry Pi puhul trüki terminali:
@@ -98,6 +100,10 @@ Vaikimisi pakutud paroolid tuleb kindlasti muuta!
 
 Järgi ekraanile tekkivaid edasisi juhiseid.
 
+Kui arvuti küsib taaskäivitamist, tuleb sellega nõustuda.
+
+Olles arvuti taaskäivitanud, on raadioteenus kohalikus võrgus (näiteks koolimaja wifis) kohe kuulatav.
+
 ### Olen erinimevajadusega
 Trüki terminali:
 ```bash
@@ -107,12 +113,24 @@ gedit /var/www/html/index.php
 Raadio nimi on kahel eraldi real. Seda pole raske leida ja muuta.
 Ära üleliigset kustuta. Siis võib taas minna kauem kui veerand tundi.
 
-# Raadio võrgutamine
-Olles arvuti taaskäivitanud, on see nüüd kohalikus võrgus (näiteks koolimaja wifis) kuulatav.
+# Paigaldusjärgsed tegevused
+## Staatiline IP
+Tõenäoliselt saab voogedastusserver esialgu dünaamilise IP mis võib aja jooksul muutuda. Seega tuleb esmajärjekorras tuleb seadmele määrata DHCP vahemikust välja jääv staatiline IP. Ära häbene selles osas oma arvutispetsialistilt abi küsida.
+
+## Raadio avamine välisvõrgule
+Siin kohal on keeruline anda täpseid juhiseid, kuna palju sõltub kohaliku võrgulahenduse spetsiifikas ja kooli enda soovitud lahendusest. Järgnevalt mõned suunavad küsimused kohaliku arvutispetsialistiga suhtlemiseks:
+- *"Peame otsustama kas integreerida raadio kooli kodulehele, kasutada veebiserveriks raadioserverit ennast, või kaaluda muid variante. Mis oleks meie kooli puhulk mõistlik?"*
+- *"Internetist kuulamiseks on vaja avada/suunata teatud pordid. Helivoog kasutab vaikimisi porti 8000. Kas saame seda ise teha, või peame pöörduma teenusepakkuja poole?"*
+- *"Kas sa aitaksid mind selle kõigega?"*
+
+## SSH
+SSH teenus on nii Raspbianis kui Debianis vaikimisi välja lülitatud. Kui panere serveri avalikku veebi, siis ei tohiks SSH teenust sisse lülitada, või vähemalt tuleks ära keelata parooliga sisse logimise võimalus. Vajadusel saab sisse logida ka SSH võtmega.
+
+# Süsteemis orienteerumine
+/siia panna tree väljund ja seletada asjade otstarve/
 
 
-
-## Kasutatud materjalid
+# Kasutatud materjalid
 ### [HackerThemes theme-machine](https://github.com/HackerThemes/theme-machine)
 Kasutajate veebiliidese kujundus.
 

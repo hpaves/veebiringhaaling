@@ -158,7 +158,6 @@ configure_website () {
     mkdir_if_not_there_already $website_base_folder/saated
     ln -s $website_base_folder/saated $radio_dir/$public_dir_name/saated
     chmod 775 $website_base_folder/saated || exit_with_error ${LINENO}
-    chmod -R 664 $website_base_folder/saated/*
     chown -R www-data:www-data $website_base_folder
     cp $installer_directory/mallid/dir.conf /etc/apache2/mods-enabled/dir.conf
 

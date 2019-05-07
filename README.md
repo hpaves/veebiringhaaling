@@ -5,7 +5,7 @@ Hetkel saab skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada v
 Olles teinud läbi paigalduse, on sul olemas kõik vajalik omanenda veebiraadio tegevusega alustamiseks.
 
 ## Mida mul vaja on?
-Sisuliselt on selleks vaja serveri riistvara, USB helikaarti koos mikrofonidega ja juhtmega internetiühendust.
+Sisuliselt on selleks vaja serveri riistvara, USB helipulti koos mikrofonidega ja juhtmega internetiühendust.
 
 Võimalik, et vaja läheb ka mõne arvutitega kodus oleva inimese abi. Seda eriti juhul, kui tahate raadiot kasutusele võtta kohas kus on keerulisem sisevõrk, või kui tahate raadio otse internetist (mitte vaid sisevõrgust) kuulatavaks teha.
 
@@ -29,7 +29,7 @@ Ei maksa lasta end hirmutada. Ülejäänud juhend põhineb Raspberry Pi'l mis on
 - Vähemalt 32GB class 10 microSD kaart
 - microSD kaardi lugeja
 - Kuvar, klaviatuur, hiir
-- USB helikaart (vähemalt kaks eraldi valjususe reguleerimisega sisendit)
+- USB helipult (vähemalt kaks eraldi valjususe reguleerimisega sisendit)
 - Mikrofon(id)
 - Helifailide taaesitamise seade (arvuti, nutifon)
 
@@ -38,7 +38,7 @@ Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada
 MicroSD kaardi mahu valikul peaks võtma arvesse kui palju on omaloodud saateid salvestada. 
 
 ## Kas kindlasti just need seadmed?
-Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Helikaardi asendamiseks sobib ka helipult (koolis ilmselt olemas, kogub tõenäoliselt ürituse vahelisel ajal tolmu). Pult annab rohkem võimalusi, kuid pole soovitatavate seadmete nimekirjas peamiselt hinna tõttu. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
+Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
 
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi

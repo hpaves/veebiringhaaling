@@ -36,17 +36,17 @@ make_line_number_variable
 # exit_with_error ${LINENO}
 
 mkdir_if_not_there_already $radio_dir
-mkdir_if_not_there_already $radio_dir/salvestused
+mkdir_if_not_there_already $radio_dir/$recording_dir_name
 mkdir_if_not_there_already $radio_dir/$public_dir_name
-mkdir_if_not_there_already $radio_dir/$public_dir_name/muusika
-mkdir_if_not_there_already $radio_dir/$public_dir_name/teated
+mkdir_if_not_there_already $radio_dir/$public_dir_name/$music_dir_name
+mkdir_if_not_there_already $radio_dir/$public_dir_name/$jingle_dir_name
 
-touch_if_not_there_already $radio_dir/$public_dir_name/muusika.m3u
-touch_if_not_there_already $radio_dir/$public_dir_name/teated.m3u
+touch_if_not_there_already $radio_dir/$public_dir_name/$music_dir_name.m3u
+touch_if_not_there_already $radio_dir/$public_dir_name/$jingle_dir_name.m3u
 
-cp_if_not_there_already $installer_directory/esitusloendid.txt $radio_dir/esitusloendid.txt
-cp_if_not_there_already $installer_directory/v2rskenda_esitusloendeid.sh $radio_dir/v2rskenda_esitusloendeid.sh
-cp_if_not_there_already $installer_directory/helid/vaikimisi.ogg $radio_dir/$public_dir_name/vaikimisi.ogg
+cp_if_not_there_already $installer_directory/$default_playlist_name $radio_dir/$default_playlist_name
+cp_if_not_there_already $installer_directory/$playlist_refresh_script_file_name $radio_dir/$playlist_refresh_script_file_name
+cp_if_not_there_already $installer_directory/helid/$default_audio_file_name $radio_dir/$public_dir_name/$default_audio_file_name
 
 if [ ! $(cat /etc/group | grep veebiringhaaling) ]
 then
@@ -70,11 +70,11 @@ configure_website
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
 chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
-chmod -R 750 $radio_dir/salvestused || exit_with_error ${LINENO}
+chmod -R 750 $radio_dir/$recording_dir_name || exit_with_error ${LINENO}
 
 bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh root "0 3 * * 6 /usr/local/bin/youtube-dl -U"
-bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh $linux_username "* * * * * /bin/bash $radio_dir/v2rskenda_esitusloendeid.sh"
+bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh $linux_username "* * * * * /bin/bash $radio_dir/$playlist_refresh_script_file_name"
 
-sudo -u $linux_username bash $radio_dir/v2rskenda_esitusloendeid.sh
+sudo -u $linux_username bash $radio_dir/$playlist_refresh_script_file_name
 
 printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu, mida ei peagi olema."

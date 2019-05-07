@@ -8,7 +8,7 @@
 icecast_password_save_option () {
     if whiptail --yesno --title "Jääb sulle see kõik meelde?" "Sinu icecast serveri andmed:\n\nAadress samast arvutist ühendamiseks: $icecast_hostname\nAadress kohalikust võrgust ühendamiseks: $(private_ipv4)\nServeri port: $icecast_port\nMeediavoo ühendamise parool: $icecast_source_password\nRelee seadistamise parool: $icecast_relay_password\nVeebiliidese parool: $icecast_admin_password \nVeebiliidese kasutajanimi: $icecast_admin_user \n\nKohalikus võrgus kuulamise aadress: $(private_ipv4)\n\nKas salvestan need andmed eraldi $linux_username kodukausta?\n" 20 60 3>&1 1>&2 2>&3
     then
-        print_icecast_data > $user_homedir/serveri_andmed.txt
+        print_icecast_data > $user_homedir/$server_data_reminder_file_name
     fi
 }
 
@@ -90,7 +90,7 @@ configure_butt () {
             sed -i s/'address = .*'/'address = '$icecast_hostname/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s/'port = .*'/'port = '$icecast_port/ $butt_conf_file_location || exit_with_error ${LINENO}
             sed -i s/'password = .*'/'password = '$icecast_source_password/ $butt_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'folder = .*'%'folder = '$radio_dir'/salvestused/'% $butt_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'folder = .*'%'folder = '$radio_dir'/'$recording_dir_name'/'% $butt_conf_file_location || exit_with_error ${LINENO}
             # programmimenüü ikoonide asukohad: https://www.raspberrypi.org/forums/viewtopic.php?p=784631#p784631
             cp_if_not_there_already $installer_directory/mallid/butt.desktop /usr/share/applications/butt.desktop
             cp_if_not_there_already $installer_directory/pildid/butt-icon.svg /usr/share/pixmaps/butt-icon.svg
@@ -108,10 +108,10 @@ configure_liquidsoap () {
         then
             liquidsoap_logfile_name=$(print_filename_without_path_and_extension $liquidsoap_conf_file_location)
             sed -i s%'set("log.file.path",.*'%'set("log.file.path","/tmp/'$liquidsoap_logfile_name'.log")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'default = single.*'%'default = single("'$radio_dir'/'$public_dir_name'/vaikimisi.ogg")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/'$public_dir_name'/muusika.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/'$public_dir_name'/teated.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
-            sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/otse-eeter.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'default = single.*'%'default = single("'$radio_dir'/'$public_dir_name'/'$default_audio_file_name'")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'music   = playlist.*'%'music   = playlist("'$radio_dir'/'$public_dir_name'/'$music_dir_name'.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'jingles = playlist.*'%'jingles = playlist("'$radio_dir'/'$public_dir_name'/'$jingle_dir_name'.m3u",reload_mode="watch")'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'\[input.http.*'%'\[input.http\("http://'$icecast_hostname':'$icecast_port'/'$live_stream_name'.ogg"),'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
             sed -i s%'host=.*'%'host="'$icecast_hostname'",port='$icecast_port',password="'$icecast_source_password'",'% $liquidsoap_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
@@ -126,16 +126,16 @@ configure_youtubedl () {
         cp $youtubedl_template_file_location $youtubedl_conf_file_location || exit_with_error ${LINENO}
         if [[ -r $youtubedl_conf_file_location && -w $youtubedl_conf_file_location ]]
         then
-            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/youtube_allalaadimiste_arhiiv.txt"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
-            sed -i s:'-o .*':'-o "'$radio_dir'/'$public_dir_name'/muusika/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s%'--download-archive .*'%'--download-archive "'$radio_dir'/'$youtube_archive_file_name'"'% $youtubedl_conf_file_location || exit_with_error ${LINENO}
+            sed -i s:'-o .*':'-o "'$radio_dir'/'$public_dir_name'/'$music_dir_name'/%(title)s %(id)s.%(ext)s"': $youtubedl_conf_file_location || exit_with_error ${LINENO}
         fi
     fi
 }
 
 ask_for_youtube_url () {
-    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/raadio kaustas asub fail esitusloendid.txt\n\nAntud failis olevaid esitusloendeid kontrollitakse ajakohasuse osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia oma esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
+    if youtube_url=$(whiptail --inputbox --title "Add first playlist to youtube-dl" "\nSinu serveri ~/$radio_dir_name kaustas asub fail $default_playlist_name\n\nAntud failis olevaid esitusloendeid kontrollitakse ajakohasuse osas, tõmmatakse uued lood alla lisatakse raadioprogrammi.\n\nFaili saab igal ajal täiendada, aga palun lisa siia oma esimene YouTube esitusloend või viide.\n" 17 60 "https://www.youtube.com/watch?v=z0NfI2NeDHI" 3>&1 1>&2 2>&3)
     then
-        printf "$youtube_url\n" >> $radio_dir/esitusloendid.txt 
+        printf "$youtube_url\n" >> $radio_dir/$default_playlist_name 
     fi
 }
 
@@ -150,15 +150,15 @@ update_index_html_element () {
 }
 
 configure_website () {
-    mkdir_if_not_there_already $website_base_folder/saated || exit_with_error ${LINENO}
-    chmod -R 644 $website_base_folder/* || exit_with_error ${LINENO}
-    chmod 755 $website_base_folder/css || exit_with_error ${LINENO}
-    chmod -R 644 $website_base_folder/css/* || exit_with_error ${LINENO}
+    mkdir_if_not_there_already $website_base_dir/saated || exit_with_error ${LINENO}
+    chmod -R 644 $website_base_dir/* || exit_with_error ${LINENO}
+    chmod 755 $website_base_dir/css || exit_with_error ${LINENO}
+    chmod -R 644 $website_base_dir/css/* || exit_with_error ${LINENO}
 
-    mkdir_if_not_there_already $website_base_folder/saated
-    ln -s $website_base_folder/saated $radio_dir/$public_dir_name/saated
-    chmod 775 $website_base_folder/saated || exit_with_error ${LINENO}
-    chown -R www-data:www-data $website_base_folder
+    mkdir_if_not_there_already $website_base_dir/saated
+    ln -s $website_base_dir/saated $radio_dir/$public_dir_name/saated
+    chmod 775 $website_base_dir/saated || exit_with_error ${LINENO}
+    chown -R www-data:www-data $website_base_dir
     cp $installer_directory/mallid/dir.conf /etc/apache2/mods-enabled/dir.conf
 
     if [[ ! $(groups $linux_username | grep www-data) ]]

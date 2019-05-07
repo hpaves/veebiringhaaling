@@ -23,12 +23,17 @@ check_for_root_privileges_absence
 make_line_number_variable
 # exit_with_error ${LINENO}
 
-public_dir_name="avalik"
-public_dir="$HOME/raadio/$public_dir_name"
-playlist_repository="$HOME/raadio/esitusloendid.txt"
+# duplikaatmuutujad failis global_variables.sh
+public_dir_name=avalik
+radio_dir_name=raadio
+default_playlist_name=esitusloendid.txt
+# duplikaatmuutjate lõpp
+
+public_dir="$HOME/$radio_dir_name/$public_dir_name"
+playlist_repository="$HOME/$radio_dir_name/$default_playlist_name"
 
 # pidev muutuste kontroll https://stackoverflow.com/a/28338077
-if [[ $(find $HOME/raadio/ -mmin -2 -type f -print) ]]
+if [[ $(find $HOME/$radio_dir_name/ -mmin -2 -type f -print) ]]
 then
     if [[ -r $playlist_repository && -w $playlist_repository ]]
     then

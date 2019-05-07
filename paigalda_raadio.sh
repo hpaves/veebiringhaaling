@@ -56,6 +56,6 @@ install_youtubedl
 choose_between_regular_and_restricted_website_install
 apt-get clean && apt-get autoremove -y
 
-bash $installer_directory/seadista_raadio.sh "$linux_username" || exit_with_error ${LINENO}
+bash $installer_directory/$configuration_script_file_name "$linux_username" || exit_with_error ${LINENO}
 
 reboot_prompt

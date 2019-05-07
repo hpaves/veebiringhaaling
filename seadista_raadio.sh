@@ -76,5 +76,3 @@ bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh root "0 3
 bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh $linux_username "* * * * * /bin/bash $radio_dir/$playlist_refresh_script_file_name"
 
 sudo -u $linux_username bash $radio_dir/$playlist_refresh_script_file_name
-
-printf "\nVõimalikud find veateated on paigaldusskripti käivitades normaalsed.\nNeed tähendavad, et kasutajal $linux_username pole paigaldusfailide kaustale ligipääsu, mida ei peagi olema."

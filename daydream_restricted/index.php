@@ -33,7 +33,7 @@ if ($_SESSION["verified"]) {
 </div>
 
 <?php
-$files = glob('saated/*.mp3');
+$files = glob('jarelkuulamine/*.mp3');
 if (count($files) > 0) {
 
 echo '<!--old_show_section-->',"\n"
@@ -46,7 +46,7 @@ echo '<!--old_show_section-->',"\n"
 
 // reading files from a directory https://stackoverflow.com/a/4560953
 $x = 0;
-foreach(glob('saated/*.mp3') as $file) { $x++; echo 
+foreach(glob('jarelkuulamine/*.mp3') as $file) { $x++; echo 
 '        <div class="panel panel-default">',"\n"
 .'          <div class="panel-heading">',"\n"
 .'          <h4 class="panel-title">',"\n"

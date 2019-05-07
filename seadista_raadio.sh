@@ -48,12 +48,12 @@ cp_if_not_there_already $installer_directory/$default_playlist_name $radio_dir/$
 cp_if_not_there_already $installer_directory/$playlist_refresh_script_file_name $radio_dir/$playlist_refresh_script_file_name
 cp_if_not_there_already $installer_directory/helid/$default_audio_file_name $radio_dir/$public_dir_name/$default_audio_file_name
 
-if [ ! $(cat /etc/group | grep veebiringhaaling) ]
+if [ ! $(cat /etc/group | grep $webcasting_user_group) ]
 then
-    groupadd veebiringhaaling || exit_with_error ${LINENO}
-    usermod -a -G veebiringhaaling $linux_username || exit_with_error ${LINENO}
-    usermod -a -G veebiringhaaling icecast2 || exit_with_error ${LINENO}
-    usermod -a -G veebiringhaaling liquidsoap || exit_with_error ${LINENO}
+    groupadd $webcasting_user_group || exit_with_error ${LINENO}
+    usermod -a -G $webcasting_user_group $linux_username || exit_with_error ${LINENO}
+    usermod -a -G $webcasting_user_group icecast2 || exit_with_error ${LINENO}
+    usermod -a -G $webcasting_user_group liquidsoap || exit_with_error ${LINENO}
 fi
 
 read_icecast_data
@@ -68,7 +68,7 @@ ask_for_youtube_url
 configure_website
 
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
-chown -R :veebiringhaaling $radio_dir/$public_dir_name || exit_with_error ${LINENO}
+chown -R :$webcasting_user_group $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 750 $radio_dir/$recording_dir_name || exit_with_error ${LINENO}
 

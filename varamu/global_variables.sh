@@ -6,6 +6,8 @@
 # How to reference: source global_variables.sh
 
 user_homedir=/home/$linux_username
+webcasting_user_group=veebiringhaaling
+
 website_base_dir="/var/www/html"
 website_index_location="$website_base_dir/index.php"
 
@@ -36,15 +38,13 @@ butt_conf_file_location="$user_homedir/.buttrc"
 liquidsoap_conf_file_location="/etc/liquidsoap/raadio.liq"
 youtubedl_conf_file_location="$user_homedir/.config/youtube-dl/config"
 
-server_data_reminder_file_name=serveri_andmed.txt
-
 default_audio_file_name=vaikimisi.ogg
+
+server_data_reminder_file_name=serveri_andmed.txt
 youtube_archive_file_name=youtube_allalaadimiste_arhiiv.txt
-
-
-replay_playlist_file_name=
-
-
+replay_listing=jarelkuulamise_nimekiri.txt
 
 default_stream_name=raadio
+default_ogg_stream_name=raadio.ogg
+default_mp3_stream_name=raadio
 live_stream_name=otse-eeter

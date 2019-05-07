@@ -150,14 +150,14 @@ update_index_html_element () {
 }
 
 configure_website () {
-    mkdir_if_not_there_already $website_base_dir/saated || exit_with_error ${LINENO}
+    mkdir_if_not_there_already $website_base_dir/$replay_dir_name || exit_with_error ${LINENO}
     chmod -R 644 $website_base_dir/* || exit_with_error ${LINENO}
     chmod 755 $website_base_dir/css || exit_with_error ${LINENO}
     chmod -R 644 $website_base_dir/css/* || exit_with_error ${LINENO}
 
-    mkdir_if_not_there_already $website_base_dir/saated
-    ln -s $website_base_dir/saated $radio_dir/$public_dir_name/saated
-    chmod 775 $website_base_dir/saated || exit_with_error ${LINENO}
+    mkdir_if_not_there_already $website_base_dir/$replay_dir_name
+    ln -s $website_base_dir/$replay_dir_name $radio_dir/$public_dir_name/$replay_dir_name
+    chmod 775 $website_base_dir/$replay_dir_name || exit_with_error ${LINENO}
     chown -R www-data:www-data $website_base_dir
     cp $installer_directory/mallid/dir.conf /etc/apache2/mods-enabled/dir.conf
 

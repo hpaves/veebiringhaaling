@@ -40,14 +40,14 @@ check_for_root_privileges
 make_line_number_variable
 # exit_with_error ${LINENO}
 
-# printf "Kontrollin kas süsteem on ajakohane...\n"
-# apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error ${LINENO}
-# printf "Süsteem on ajakohane.\n"
+printf "Kontrollin kas süsteem on ajakohane...\n"
+apt-get update > /dev/null 2>&1 && apt-get full-upgrade -y || exit_with_error ${LINENO}
+printf "Süsteem on ajakohane.\n"
 
 apt_install curl
 apt_install ffmpeg
 apt_install sudo
-# apt_install audacity
+apt_install audacity
 apt_install ufw
 apt_install icecast2
 apt_install liquidsoap

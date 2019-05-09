@@ -185,5 +185,6 @@ give_icecast_auth_option () {
         touch /etc/icecast2/myauth
         chown icecast2:icecast /etc/icecast2/myauth
         sed -i "s%</icecast>%    <mount>\n        <mount-name>/raadio</mount-name>\n        <authentication type=\"htpasswd\">\n            <option name=\"filename\" value=\"/etc/icecast2/myauth\"/>\n            <option name=\"allow_duplicate_users\" value=\"1\"/>\n        </authentication>\n    </mount>\n\n    <mount>\n        <mount-name>/raadio.ogg</mount-name>\n        <authentication type=\"htpasswd\">\n            <option name=\"filename\" value=\"/etc/icecast2/myauth\"/>\n            <option name=\"allow_duplicate_users\" value=\"1\"/>\n        </authentication>\n    </mount>\n</icecast>%" $icecast_conf_file_location || exit_with_error
+        sed -i "s%</body>%<div class=\"card bg-primary text-white mb-3 text-center\">\n  <div class=\"card-body\">\n    <blockquote class=\"card-blockquote\">\n      <p>iOS või muu autentimist mitte toetava seadmega soovitame raadiovoo kuulamiseks kasutada VLC meediamängijat kasutades aadressi:</p>\n      <footer>http://'$(private_ipv4):$icecast_port/$default_stream_name'</footer>\n    </blockquote>\n  </div>\n</div>\n  </body>\n%" $website_index_location || exit_with_error
     fi
 }

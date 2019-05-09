@@ -43,12 +43,20 @@ echo '<!--old_show_section-->',"\n"
 
 // reading files from a directory https://stackoverflow.com/a/4560953
 $x = 0;
-foreach(glob('jarelkuulamine/*.mp3') as $file) { $x++; echo 
+foreach(glob('jarelkuulamine/*.mp3') as $file) { 
+$patterns = array();
+$patterns[0] = '/jarelkuulamine\//';
+$patterns[1] = '/\.mp3/';
+$replacements = array();
+$replacements[1] = '';
+$replacements[0] = '';
+$name = preg_replace($patterns, $replacements, $file);
+
+$x++; echo 
 '        <div class="panel panel-default">',"\n"
 .'          <div class="panel-heading">',"\n"
 .'          <h4 class="panel-title">',"\n"
-.'              <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$x.'">'. $file .'</a>',"\n"
-.'               </h4>',"\n"
+.'              <a data-toggle="collapse" data-parent="#accordion" href="#collapse'.$x.'">'. $name .'</a>',"\n".'               </h4>',"\n"
 .'                </div>',"\n"
 .'                 <div id="collapse'.$x.'" class="panel-collapse collapse in">',"\n"
 .'             <audio id="recordings" xmlns="http://www.w3.org/1999/xhtml" controls="controls" preload="none"><source src="http://192.168.1.12/' .$file. '" type="audio/mpeg" /></audio>',"\n"

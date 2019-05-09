@@ -53,7 +53,7 @@ apt_install icecast2
 apt_install liquidsoap
 install_butt
 install_youtubedl
-choose_between_regular_and_restricted_website_install
+install_website
 apt-get clean && apt-get autoremove -y
 
 bash $installer_directory/$configuration_script_file_name "$linux_username" || exit_with_error ${LINENO}

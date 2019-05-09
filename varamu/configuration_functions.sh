@@ -166,7 +166,7 @@ configure_website () {
         usermod -a -G www-data $linux_username || exit_with_error ${LINENO}
     fi
 
-    if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Raadio tüübi saad määrata järgmises aknas.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
+    if radio_owner=$(whiptail --inputbox --title "Who's radio is this?" "\nRaadio kodulehele on vaja pealkirja.\n\nVaikimisi on selleks 'Meie oma raadio'.\n\nSiia sisesta kelle raadioga on tegu. Fraasi lõpus olev sõna \"raadio\" on hetkel kivisse raiutud ning lisatakse automaatselt.\n" 17 60 "Meie oma" 3>&1 1>&2 2>&3)
     then
         sed -i "s%<h1 class=\"display-3 text-white text-handwriting text-uppercase\">.*</h1>%<h1 class=\"display-3 text-white text-handwriting text-uppercase\">$radio_owner</h1>%" $website_index_location || exit_with_error ${LINENO}
     fi
@@ -177,4 +177,13 @@ configure_website () {
 
     sed -i "s%<title>.*</title>%<title>$radio_owner raadio</title>%" $website_index_location || exit_with_error ${LINENO}
 
+}
+
+choose_between_regular_and_restricted_auth () {
+    if whiptail --yesno --title "Website password restrictions?" "Loodavale veebiraadiole luuakse veebiliides, mille kaudu kasutajad seda kuulavad.\n\nKas kasutajad peaks raadiole ligipääsuks sisestama parooli?\n\nParooli määramine on kasulik näiteks haridusasutusele, kes tahab oma raadio internetis kättesaadavaks teha, kuid samas kuulajate ringi piirata.\n\n" 16 60 3>&1 1>&2 2>&3
+    then
+        touch /etc/icecast2/myauth
+        chown icecast2:icecast /etc/icecast2/myauth
+        sed -i "s%</icecast>%    <mount>\n        <mount-name>/raadio</mount-name>\n        <authentication type=\"htpasswd\">\n            <option name=\"filename\" value=\"/etc/icecast2/myauth\"/>\n            <option name=\"allow_duplicate_users\" value=\"1\"/>\n        </authentication>\n    </mount>\n\n    <mount>\n        <mount-name>/raadio.ogg</mount-name>\n        <authentication type=\"htpasswd\">\n            <option name=\"filename\" value=\"/etc/icecast2/myauth\"/>\n            <option name=\"allow_duplicate_users\" value=\"1\"/>\n        </authentication>\n    </mount>\n</icecast>%" $icecast_conf_file_location || exit_with_error
+    fi
 }

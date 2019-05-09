@@ -66,6 +66,7 @@ print_icecast_data
 icecast_password_save_option
 ask_for_youtube_url
 configure_website
+give_icecast_auth_option
 
 chown -R $linux_username:$linux_username $user_homedir/. || exit_with_error ${LINENO}
 chown -R :$webcasting_user_group $radio_dir/$public_dir_name || exit_with_error ${LINENO}

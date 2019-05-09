@@ -180,7 +180,7 @@ configure_website () {
 }
 
 give_icecast_auth_option () {
-    if whiptail --yesno --title "Website password restrictions?" "Loodavale veebiraadiole luuakse veebiliides, mille kaudu kasutajad seda kuulavad.\n\nKas kasutajad peaks raadiole ligipääsuks sisestama parooli?\n\nParooli määramine on kasulik näiteks haridusasutusele, kes tahab oma raadio internetis kättesaadavaks teha, kuid samas kuulajate ringi piirata.\n\nKasutajad ja paroolid tuleb käsitsi määrata $(private_ipv4):$icecast_port aadressil asuvas seadistuskonsoolis.\n\n" 16 40 3>&1 1>&2 2>&3
+    if whiptail --yesno --title "Website password restrictions?" "Loodavale veebiraadiole luuakse veebiliides, mille kaudu kasutajad seda kuulavad.\n\nKas kasutajad peaks raadiole ligipääsuks sisestama parooli?\n\nParooli määramine on kasulik näiteks haridusasutusele, kes tahab oma raadio internetis kättesaadavaks teha, kuid samas kuulajate ringi piirata.\n\nKasutajad ja paroolid tuleb käsitsi määrata $(private_ipv4):$icecast_port aadressil asuvas seadistuskonsoolis.\n\n" 18 60 3>&1 1>&2 2>&3
     then
         touch /etc/icecast2/myauth
         chown icecast2:icecast /etc/icecast2/myauth

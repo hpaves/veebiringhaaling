@@ -74,6 +74,6 @@ chmod -R 754 $radio_dir/$public_dir_name || exit_with_error ${LINENO}
 chmod -R 750 $radio_dir/$recording_dir_name || exit_with_error ${LINENO}
 
 bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh root "0 3 * * 6 /usr/local/bin/youtube-dl -U"
-bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh $linux_username "* * * * * /bin/bash $radio_dir/$playlist_refresh_script_file_name"
+bash $installer_directory/$repository_name/add_cronjob_user_x_job_y.sh $linux_username "* 1 * * * /bin/bash $radio_dir/$playlist_refresh_script_file_name"
 
 sudo -u $linux_username bash $radio_dir/$playlist_refresh_script_file_name

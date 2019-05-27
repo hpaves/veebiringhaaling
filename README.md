@@ -149,19 +149,19 @@ Paigaldusjärgselt tekib kasutaja kodukausta kaust "raadio", millel on vaikimisi
 
 ## Kaustade ja failide funktsionaalsuse seletus
 
-*├── raadio* (raadiofailide põhiline kaust)
-*│   ├── avalik* (selle kausta sisu läheb ühel või teisel moel eetrisse)
-*│   │   ├── jarelkuulamine* (siia kausta tuleb käsitsi lisada mp3 formaadis järekuulamise saated)
-*│   │   ├── muusika* (siia kausta lisanduvad automaatselt esitusloendid.txt faili lisatud YouTube helifailid)
-*│   │   ├── muusika.m3u* ('muusika' kausta esitusloend, genereeritakse automaatselt)
-*│   │   ├── teated* (siia kausta tuleb käsitsi lisada reklaamid või teated, mida aeg-ajalt lugude vahel välja hõigata)
-*│   │   ├── teated.m3u* ('teated' kausta esitusloend, genereeritakse automaatselt)
-*│   │   └── vaikimisi.ogg* (vaikimisi helifail; mängitakse juhul, kui esitusloendid pole mingil põhjusel valmis)
-*│   ├── esitusloendid.txt* (tekstifail kuhu tuleb lisada YouTube viited või esituloendid, mis kord päevas automaatselt alla tõmmatakse)
-*│   ├── salvestused* (siia salvestuvad kõik Butt meediavood; sisuliselt otsesaadete salvestuspaik)
-*│   ├── v2rskenda_esitusloendeid.sh* (hoiab esitusloendid ajakohasena, käivitub kord päevas automaatselt)
-*│   └── youtube_allalaadimiste_arhiiv.txt* (YouTube'st alla tõmmatud failide nimistu)
-*├── serveri_andmed.txt* (voogedastusserveri andmed; sõltuvalt seadistamisel tehtud valikutest ei pruugi seda faili eksisteerida)
+**├── raadio** (raadiofailide põhiline kaust)
+**│   ├── avalik** (selle kausta sisu läheb ühel või teisel moel eetrisse)
+**│   │   ├── jarelkuulamine** (siia kausta tuleb käsitsi lisada mp3 formaadis järekuulamise saated)
+**│   │   ├── muusika** (siia kausta lisanduvad automaatselt esitusloendid.txt faili lisatud YouTube helifailid)
+**│   │   ├── muusika.m3u** ('muusika' kausta esitusloend, genereeritakse automaatselt)
+**│   │   ├── teated** (siia kausta tuleb käsitsi lisada reklaamid või teated, mida aeg-ajalt lugude vahel välja hõigata)
+**│   │   ├── teated.m3u** ('teated' kausta esitusloend, genereeritakse automaatselt)
+**│   │   └── vaikimisi.ogg** (vaikimisi helifail; mängitakse juhul, kui esitusloendid pole mingil põhjusel valmis)
+**│   ├── esitusloendid.txt** (tekstifail kuhu tuleb lisada YouTube viited või esituloendid, mis kord päevas automaatselt alla tõmmatakse)
+**│   ├── salvestused** (siia salvestuvad kõik Butt meediavood; sisuliselt otsesaadete salvestuspaik)
+**│   ├── v2rskenda_esitusloendeid.sh** (hoiab esitusloendid ajakohasena, käivitub kord päevas automaatselt)
+**│   └── youtube_allalaadimiste_arhiiv.txt** (YouTube'st alla tõmmatud failide nimistu)
+**├── serveri_andmed.txt** (voogedastusserveri andmed; sõltuvalt seadistamisel tehtud valikutest ei pruugi seda faili eksisteerida)
 
 
 

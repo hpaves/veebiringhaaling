@@ -38,7 +38,9 @@ Korraks on vaja ka ligipääsu Linux, macOS või Windows arvutile, et vormindada
 MicroSD kaardi mahu valikul peaks võtma arvesse kui palju on omaloodud saateid salvestada. 
 
 ## Kas kindlasti just need seadmed?
-Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse. Virtuaalmasinasse on samuti võimalik paigaldada, kuid sel juhul on mikrofonide ühendamine keerulisem. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
+Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Raspberry Pi oli virtuaalse koormustesti andmetel võimeline raadiot edastama vähemalt tuhandele kuulajale. Samas jäi riistvara nõrgaks YouTube failide teisendamisel, mille ajal esines eetris heli nn "hakkimine".
+
+Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse, mispuhul sõltuvalt protsessori jõudluse kasvust võrreldes Pi'ga peaks lahenema helifailide teisendamise ajal esinenud hakkimine. Raadiot on samuti võimalik paigaldada virtuaalmasinasse, kuid sel juhul on mikrofonide ühendamine keerulisem. Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendamiseks vana kõvaketta asemel panna arvutisse kaasaegne SSD. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
 
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
@@ -127,12 +129,45 @@ Siin kohal on keeruline anda täpseid juhiseid, kuna palju sõltub kohaliku võr
 SSH teenus on nii Raspbianis kui Debianis vaikimisi välja lülitatud. Kui panere serveri avalikku veebi, siis ei tohiks SSH teenust sisse lülitada, või vähemalt tuleks ära keelata parooliga sisse logimise võimalus. Vajadusel saab sisse logida ka SSH võtmega.
 
 # Süsteemis orienteerumine
-/siia panna tree väljund ja seletada asjade otstarve/
+Paigaldusjärgselt tekib kasutaja kodukausta kaust "raadio", millel on vaikimisi järgmine sisu: 
+
+```
+├── raadio
+│   ├── avalik
+│   │   ├── jarelkuulamine -> /var/www/html/jarelkuulamine
+│   │   ├── muusika
+│   │   ├── muusika.m3u
+│   │   ├── teated
+│   │   ├── teated.m3u
+│   │   └── vaikimisi.ogg
+│   ├── esitusloendid.txt
+│   ├── salvestused
+│   ├── v2rskenda_esitusloendeid.sh
+│   └── youtube_allalaadimiste_arhiiv.txt
+├── serveri_andmed.txt
+```
+
+## Kaustade ja failide funktsionaalsuse seletus
+
+*├── raadio* (raadiofailide põhiline kaust)
+*│   ├── avalik* (selle kausta sisu läheb ühel või teisel moel eetrisse)
+*│   │   ├── jarelkuulamine* (siia kausta tuleb käsitsi lisada mp3 formaadis järekuulamise saated)
+*│   │   ├── muusika* (siia kausta lisanduvad automaatselt esitusloendid.txt faili lisatud YouTube helifailid)
+*│   │   ├── muusika.m3u* ('muusika' kausta esitusloend, genereeritakse automaatselt)
+*│   │   ├── teated* (siia kausta tuleb käsitsi lisada reklaamid või teated, mida aeg-ajalt lugude vahel välja hõigata)
+*│   │   ├── teated.m3u* ('teated' kausta esitusloend, genereeritakse automaatselt)
+*│   │   └── vaikimisi.ogg* (vaikimisi helifail; mängitakse juhul, kui esitusloendid pole mingil põhjusel valmis)
+*│   ├── esitusloendid.txt* (tekstifail kuhu tuleb lisada YouTube viited või esituloendid, mis kord päevas automaatselt alla tõmmatakse)
+*│   ├── salvestused* (siia salvestuvad kõik Butt meediavood; sisuliselt otsesaadete salvestuspaik)
+*│   ├── v2rskenda_esitusloendeid.sh* (hoiab esitusloendid ajakohasena, käivitub kord päevas automaatselt)
+*│   └── youtube_allalaadimiste_arhiiv.txt* (YouTube'st alla tõmmatud failide nimistu)
+*├── serveri_andmed.txt* (voogedastusserveri andmed; sõltuvalt seadistamisel tehtud valikutest ei pruugi seda faili eksisteerida)
+
 
 
 # Kasutatud materjalid
 ### [HackerThemes theme-machine](https://github.com/HackerThemes/theme-machine)
 Kasutajate veebiliidese kujundus.
 
-### [henry7720 Verification-Page](https://github.com/henry7720/Verification-Page)
-Turvab vajadusel kasutajate veebiliidest parooliga.
+### [aerth striss](https://github.com/aerth/striss)
+Icecast koormustest.

@@ -40,7 +40,11 @@ MicroSD kaardi mahu valikul peaks võtma arvesse kui palju on omaloodud saateid 
 ## Kas kindlasti just need seadmed?
 Katsetamiseks sobib ka Raspberry Pi komplektiga kaasa tulnud 8GB NOOBS kaart, kuid sellel saab ruum kohe otsa. Raspberry Pi oli virtuaalse koormustesti andmetel võimeline raadiot edastama vähemalt tuhandele kuulajale. Samas jäi riistvara nõrgaks YouTube failide teisendamisel, mille ajal esines eetris heli nn "hakkimine".
 
-Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse, mispuhul sõltuvalt protsessori jõudluse kasvust võrreldes Pi'ga peaks lahenema helifailide teisendamise ajal esinenud hakkimine. Raadiot on samuti võimalik paigaldada virtuaalmasinasse, kuid sel juhul on mikrofonide ühendamine keerulisem. Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendamiseks vana kõvaketta asemel panna arvutisse kaasaegne SSD. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian.
+Tegelikult võib raadio isegi paigaldada tavaarvutisse, mispuhul sõltuvalt protsessori jõudluse kasvust võrreldes Pi'ga peaks lahenema helifailide teisendamise ajal esinenud hakkimine. Raadio on mõtekas paigaldada tavaarvutisse ka juhul, kui plaanis on tihedam helifailide toimetamine Audacity abil. Tavaarvutis on soovitatav Raspbiani asemel kasutada operatsioonisüsteemi Debian. 
+
+Peamine miinus tavaarvuti kasutuselevõtu puhul on riistvara suur varieeruvus -- raadio tööle saamiseks võib (aga ei pruugi) vaja minna lisaseadistamist. 
+
+Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendamiseks vana kõvaketta asemel panna arvutisse kaasaegne SSD. Raadiot on samuti võimalik paigaldada virtuaalmasinasse, kuid sel juhul on mikrofonide ühendamine keerulisem. 
 
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
@@ -64,8 +68,10 @@ Tegelikult võib raadio isegi paigaldada mõnda (vanemasse) arvutisse, mispuhul 
 
 ## Kui sul pole luba tarkvara paigaldada
 - Tõmba alla [NOOBS](https://www.raspberrypi.org/downloads/noobs/)
-- QuickHash GUI käivitub ka ilma paigaldamata, seega on tervikluse kontroll sama mis eelmises punktis
-- 
+- QuickHash GUI käivitub ka ilma paigaldamata, seega on tervikluse kontroll sama mis eelmises punktis.
+- Paki fail lahti eraldi kausta.
+- Lohista kausta sisu SD kaardile.
+- Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
 
 # Tarkvara paigaldusjuhised
 Raspberry Pi puhul trüki terminali:
@@ -105,6 +111,12 @@ Järgi ekraanile tekkivaid edasisi juhiseid.
 Kui arvuti küsib taaskäivitamist, tuleb sellega nõustuda.
 
 Olles arvuti taaskäivitanud, on raadioteenus kohalikus võrgus (näiteks koolimaja wifis) kohe kuulatav.
+
+## Paigaldamise ja seadistamise videojuhised
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/hWrEbPW3lKE/0.jpg)](http://www.youtube.com/watch?v=hWrEbPW3lKE "Veebiraadio paigaldamine")
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/SBJy08hSaAg/0.jpg)](http://www.youtube.com/watch?v=SBJy08hSaAg "Veebiraadio kasutajate lisamine")
 
 ### Olen erinimevajadusega
 Trüki terminali:
@@ -153,7 +165,7 @@ Paigaldusjärgselt tekib kasutaja kodukausta kaust "raadio", millel on vaikimisi
 
 **│   ├── avalik** (selle kausta sisu läheb ühel või teisel moel eetrisse)
 
-**│   │   ├── jarelkuulamine** (siia kausta tuleb käsitsi lisada mp3 formaadis järekuulamise saated)
+**│   │   ├── jarelkuulamine** (siia kausta tuleb käsitsi lisada mp3 formaadis järekuulamise saated; järelkuulatava saate nimeks võetakse failinimi)
 
 **│   │   ├── muusika** (siia kausta lisanduvad automaatselt esitusloendid.txt faili lisatud YouTube helifailid)
 
@@ -165,9 +177,9 @@ Paigaldusjärgselt tekib kasutaja kodukausta kaust "raadio", millel on vaikimisi
 
 **│   │   └── vaikimisi.ogg** (vaikimisi helifail; mängitakse juhul, kui esitusloendid pole mingil põhjusel valmis)
 
-**│   ├── esitusloendid.txt** (tekstifail kuhu tuleb lisada YouTube viited või esituloendid, mis kord päevas automaatselt alla tõmmatakse)
+**│   ├── esitusloendid.txt** (tekstifail kuhu tuleb lisada YouTube viited või esitusloendid, mis kord päevas automaatselt alla tõmmatakse)
 
-**│   ├── salvestused** (siia salvestuvad kõik Butt meediavood; sisuliselt otsesaadete salvestuspaik)
+**│   ├── salvestused** (siia salvestuvad kõik Butt meediavood; sisuliselt otsesaadete salvestuspaik; otsesaadete järelkuulatavaks tegemiseks tõsta need failid kausta 'jarelkuulamine'; soovi korral on võimalik Butt seadisada niiviisi, et kõik otsesaated lähevad ilma kasutaja sekkumiseta otse järelkuulamise kausta)
 
 **│   ├── v2rskenda_esitusloendeid.sh** (hoiab esitusloendid ajakohasena, käivitub kord päevas automaatselt)
 
@@ -175,7 +187,12 @@ Paigaldusjärgselt tekib kasutaja kodukausta kaust "raadio", millel on vaikimisi
 
 **├── serveri_andmed.txt** (voogedastusserveri andmed; sõltuvalt seadistamisel tehtud valikutest ei pruugi seda faili eksisteerida)
 
+## Otseeter
+Kasuta programmi Butt. Otseetri käivitamiseks klõpsa Play, mitte Record nuppu.
 
+
+## Helifailide toimetamine
+Kasuta programmi Audacity.
 
 # Kasutatud materjalid
 ### [HackerThemes theme-machine](https://github.com/HackerThemes/theme-machine)
@@ -183,3 +200,7 @@ Kasutajate veebiliidese kujundus.
 
 ### [aerth striss](https://github.com/aerth/striss)
 Icecast koormustest.
+
+### Kooliraadioküsitlused
+[Üleriigilise küsitluse tulemused](https://melliste.ee/veebiringhaaling/yleriigiline_kysimustik.html)
+[Melliste kooli küsitluse tulemused](https://melliste.ee/veebiringhaaling/melliste_kysimustik.html)

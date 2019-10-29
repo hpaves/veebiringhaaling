@@ -46,14 +46,19 @@ Peamine miinus tavaarvuti kasutuselevõtu puhul on riistvara suur varieeruvus --
 
 Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendamiseks vana kõvaketta asemel panna arvutisse kaasaegne SSD. Raadiot on samuti võimalik paigaldada virtuaalmasinasse, kuid sel juhul on mikrofonide ühendamine keerulisem. 
 
+# Operatsioonisüsteemi valik
+Käesolev tarkvara on testitud järgmiste operatsioonisüsteemidega:
+- [Raspbian Stretch](https://downloads.raspberrypi.org/raspbian/images/raspbian-2019-04-09/)
+- [Debian 9 (Stretch)](https://www.debian.org/releases/stretch/debian-installer/)
+
 # Riistvara paigaldusjuhend
 - Komplekteeri Raspberry Pi
 - Ühenda kuvar, klaviatuur, hiir
 - Pane microSD kaart lugejasse ning ühenda see arvutiga
 
-## Kui sul on luba tarkvara paigaldada
+## Sul on vaja luba arvutis tarkvara paigaldada
 - Paigalda programmid [Etcher](https://www.balena.io/etcher/) ja [QuickHash GUI](https://quickhash-gui.org/downloads/)
-- Tõmba alla [Raspbian with Desktop](https://www.raspberrypi.org/downloads/raspbian/)
+- Tõmba alla [Raspbian with Desktop](https://downloads.raspberrypi.org/raspbian/images/raspbian-2019-04-09/)
 - Ava QuickHash GUI veendumaks, et tõmmatud Raspbian on terviklik 
   - Vali alamenüü *File*
   - Vali algoritmiks *SHA-256*
@@ -64,13 +69,6 @@ Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendam
   - Vali Raspbiani .img fail
   - Vali sisestatud SD kaart
   - Vajuta *Flash!*
-- Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
-
-## Kui sul pole luba tarkvara paigaldada
-- Tõmba alla [NOOBS](https://www.raspberrypi.org/downloads/noobs/)
-- QuickHash GUI käivitub ka ilma paigaldamata, seega on tervikluse kontroll sama mis eelmises punktis.
-- Paki fail lahti eraldi kausta.
-- Lohista kausta sisu SD kaardile.
 - Kui kõik valmis, eemalda microSD kaart lugejast ja sisesta Pi'sse.
 
 # Tarkvara paigaldusjuhised
@@ -84,7 +82,7 @@ bash paigalda_raadio.sh pi
 
 Debiani juhend, kui tavakasutaja nimi on dj:
 ```bash
-su
+su -
 cd
 apt update && apt install git -y
 git clone https://github.com/hpaves/veebiringhaaling.git
@@ -203,4 +201,5 @@ Icecast koormustest.
 
 ### Kooliraadioküsitlused
 [Üleriigilise küsitluse tulemused](https://melliste.ee/veebiringhaaling/yleriigiline_kysimustik.html)
+
 [Melliste kooli küsitluse tulemused](https://melliste.ee/veebiringhaaling/melliste_kysimustik.html)

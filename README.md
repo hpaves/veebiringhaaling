@@ -1,13 +1,19 @@
 # Vabavaraline ringhääling veebis
-Hetkel saab skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada vaid hädavajalik info. Muu protsess on automatiseeritud.
+Hetkel saab siinsete skriptidega paigaldada veebiraadiot. Kasutajal palutakse sisestada vaid hädavajalik info. Muu protsess on automatiseeritud.
+
+## Miks on see skript vajalik?
+Antud töö eesmärgist saab lühiülevaate lugedes [diplomitöö kaitsmise slaide](pdf/kaitsmine.pdf).
 
 ## Mis on protsessi tulemuseks?
-Olles teinud läbi paigalduse, on sul olemas kõik vajalik omanenda veebiraadio tegevusega alustamiseks.
+Olles teinud läbi paigalduse, on sul olemas kõik vajalik omaenda veebiraadio tegevusega alustamiseks.
 
 ## Mida mul vaja on?
 Sisuliselt on selleks vaja serveri riistvara, USB helipulti koos mikrofonidega ja juhtmega internetiühendust.
 
 Võimalik, et vaja läheb ka mõne arvutitega kodus oleva inimese abi. Seda eriti juhul, kui tahate raadiot kasutusele võtta kohas kus on keerulisem sisevõrk, või kui tahate raadio otse internetist (mitte vaid sisevõrgust) kuulatavaks teha.
+
+## Soovitatav topoloogia
+![Soovitatav topoloogia.](pildid/soovitatav_topoloogia.png)
 
 ## Ettevalmistused
 Esiteks tuleks välja mõelda mis saab olema teie raadio nimi. Seda küsitakse tarkvara paigaldamise käigus.
@@ -46,7 +52,7 @@ Peamine miinus tavaarvuti kasutuselevõtu puhul on riistvara suur varieeruvus --
 
 Vanemat arvutit kasutusele võttes on kindlasti soovitav töökindluse suurendamiseks vana kõvaketta asemel panna arvutisse kaasaegne SSD. Raadiot on samuti võimalik paigaldada virtuaalmasinasse, kuid sel juhul on mikrofonide ühendamine keerulisem. 
 
-# Operatsioonisüsteemi valik
+## Operatsioonisüsteemi valik
 Käesolev tarkvara on testitud järgmiste operatsioonisüsteemidega:
 - [Raspbian Stretch](https://downloads.raspberrypi.org/raspbian/images/raspbian-2019-04-09/)
 - [Debian 9 (Stretch)](https://www.debian.org/releases/stretch/debian-installer/)
